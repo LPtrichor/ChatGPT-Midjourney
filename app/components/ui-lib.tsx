@@ -28,14 +28,26 @@ export function Popover(props: {
   );
 }
 
+// 与登录相关
+export function SingleInput(props: React.HTMLProps<HTMLInputElement>) {
+  return (
+    <input
+      {...props}
+      type="text"
+      className={`${styles["input"]} ${styles["input-left"]} ${props.className}`}
+    />
+  );
+}
+
 export function Card(props: { children: JSX.Element[]; className?: string }) {
   return (
     <div className={styles.card + " " + props.className}>{props.children}</div>
   );
 }
 
+// 登录相关
 export function ListItem(props: {
-  title: string;
+  title?: string;
   subTitle?: string;
   children?: JSX.Element | JSX.Element[];
   icon?: JSX.Element;
@@ -46,7 +58,7 @@ export function ListItem(props: {
       <div className={styles["list-header"]}>
         {props.icon && <div className={styles["list-icon"]}>{props.icon}</div>}
         <div className={styles["list-item-title"]}>
-          <div>{props.title}</div>
+          <div>{props.title || ""}</div>
           {props.subTitle && (
             <div className={styles["list-item-sub-title"]}>
               {props.subTitle}
@@ -58,6 +70,31 @@ export function ListItem(props: {
     </div>
   );
 }
+
+// export function ListItem(props: {
+//   title: string;
+//   subTitle?: string;
+//   children?: JSX.Element | JSX.Element[];
+//   icon?: JSX.Element;
+//   className?: string;
+// }) {
+//   return (
+//     <div className={styles["list-item"] + ` ${props.className || ""}`}>
+//       <div className={styles["list-header"]}>
+//         {props.icon && <div className={styles["list-icon"]}>{props.icon}</div>}
+//         <div className={styles["list-item-title"]}>
+//           <div>{props.title}</div>
+//           {props.subTitle && (
+//             <div className={styles["list-item-sub-title"]}>
+//               {props.subTitle}
+//             </div>
+//           )}
+//         </div>
+//       </div>
+//       {props.children}
+//     </div>
+//   );
+// }
 
 export function List(props: {
   children:

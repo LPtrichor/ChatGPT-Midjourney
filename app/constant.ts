@@ -14,6 +14,9 @@ export enum Path {
   NewChat = "/new-chat",
   Masks = "/masks",
   Auth = "/auth",
+  // 登录相关
+  Login = "/login",
+  Register = "/register",
 }
 
 export enum SlotID {
@@ -25,13 +28,28 @@ export enum FileName {
   Prompts = "prompts.json",
 }
 
+// export enum StoreKey {
+//   Chat = "chat-next-web-store",
+//   Access = "access-control",
+//   Config = "app-config",
+//   Mask = "mask-store",
+//   Prompt = "prompt-store",
+//   Update = "chat-update",
+// }
+
+//登录
 export enum StoreKey {
+  Auth = "auth",
   Chat = "chat-next-web-store",
   Access = "access-control",
   Config = "app-config",
   Mask = "mask-store",
   Prompt = "prompt-store",
   Update = "chat-update",
+  Balance = "balance",
+  Profile = "profile",
+  WebsiteConfig = "websiteCofnig",
+  NoticeConfig = "noticeConfig",
 }
 
 export const MAX_SIDEBAR_WIDTH = 500;

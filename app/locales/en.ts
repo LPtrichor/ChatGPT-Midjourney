@@ -24,7 +24,8 @@ const en: RequiredLocaleType = {
     ModeDescribe: "Describe Mode",
     NeedInputUseImgPrompt:
       'You need to enter content to use the image in the mask mode, please enter the content starting with "/mj"',
-    BlendMinImg: (min: number,max:number) => `At least ${min} images are required in the mixed image mode, and up to ${max} images are required`,
+    BlendMinImg: (min: number, max: number) =>
+      `At least ${min} images are required in the mixed image mode, and up to ${max} images are required`,
     TaskErrUnknownType: "Task submission failed: unknown task type",
     TaskErrNotSupportType: (type: string) =>
       `Task submission failed: unsupported task type -> ${type}`,
@@ -120,6 +121,30 @@ const en: RequiredLocaleType = {
     DeleteChat: "Confirm to delete the selected conversation?",
     DeleteToast: "Chat Deleted",
     Revert: "Revert",
+  },
+  LoginPage: {
+    Title: "登录",
+    SubTitle: "登录后可跟AI交流",
+    Username: {
+      Title: "用户名",
+      SubTitle: "",
+      Placeholder: "请输入用户名",
+    },
+    Password: {
+      Title: "密码",
+      SubTitle: "",
+      Placeholder: "请输入密码",
+    },
+    Actions: {
+      Close: "关闭",
+      Login: "登录",
+      Logout: "退出登录",
+    },
+    Toast: {
+      Success: "登录成功",
+      Logining: "登录中……",
+    },
+    GoToRegister: "前往注册",
   },
   Settings: {
     Title: "Settings",

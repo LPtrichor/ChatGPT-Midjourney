@@ -23,7 +23,8 @@ const cn = {
     ModeDescribe: "识图（图生文）模式",
     NeedInputUseImgPrompt:
       "垫图模式下需要输入内容才能使用图片，请以“/mj”开头输入内容",
-    BlendMinImg: (min: number,max:number) => `混图模式下至少需要 ${min} 张图片，至多 ${max} 张图片`,
+    BlendMinImg: (min: number, max: number) =>
+      `混图模式下至少需要 ${min} 张图片，至多 ${max} 张图片`,
     TaskErrUnknownType: "任务提交失败：未知的任务类型",
     TaskErrNotSupportType: (type: string) =>
       `任务提交失败：不支持的任务类型 -> ${type}`,
@@ -118,6 +119,36 @@ const cn = {
     DeleteChat: "确认删除选中的对话？",
     DeleteToast: "已删除会话",
     Revert: "撤销",
+  },
+  // 登录相关
+  LoginPage: {
+    Title: "登录",
+    SubTitle: "登录后可跟AI交流",
+    Username: {
+      Title: "用户名",
+      SubTitle: "",
+      Placeholder: "请输入用户名",
+    },
+    email: {
+      Title: "邮箱",
+      SubTitle: "",
+      Placeholder: "请输入邮箱",
+    },
+    Password: {
+      Title: "密码",
+      SubTitle: "",
+      Placeholder: "请输入密码",
+    },
+    Actions: {
+      Close: "关闭",
+      Login: "登录",
+      Logout: "退出登录",
+    },
+    Toast: {
+      Success: "登录成功",
+      Logining: "登录中……",
+    },
+    GoToRegister: "前往注册",
   },
   Settings: {
     Title: "设置",
