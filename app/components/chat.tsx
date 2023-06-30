@@ -473,7 +473,9 @@ export function Chat() {
   const authStore = useAuthStore();
 
   useEffect(() => {
-    const isLoggedIn = authStore.email != null && authStore.email != "";
+    const isLoggedIn =
+      (authStore.email != null && authStore.email != "") ||
+      (authStore.token != null && authStore.token != "");
     // const isLoggedIn = authStore.username != null && authStore.username != "";
     console.log("isLoggedIn", isLoggedIn);
     if (!isLoggedIn) {

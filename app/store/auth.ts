@@ -46,7 +46,7 @@ export const useAuthStore = create<AuthStore>()(
           set(() => ({
             email,
             username,
-            token: result.data?.token || "",
+            token: result.token || "",
           }));
         }
 
@@ -97,7 +97,7 @@ export const useAuthStore = create<AuthStore>()(
           set(() => ({
             name,
             username,
-            token: result.data?.token || "",
+            token: result.token || "",
           }));
         }
 

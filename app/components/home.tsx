@@ -24,6 +24,7 @@ import {
 import { SideBar } from "./sidebar";
 import { useAppConfig } from "../store/config";
 import { AuthPage } from "./auth";
+// import { Register } from "./register";
 
 export function Loading(props: { noLogo?: boolean }) {
   return (
@@ -35,6 +36,10 @@ export function Loading(props: { noLogo?: boolean }) {
 }
 
 const Login = dynamic(async () => (await import("./login")).Login, {
+  loading: () => <Loading noLogo />,
+});
+
+const Register = dynamic(async () => (await import("./register")).Register, {
   loading: () => <Loading noLogo />,
 });
 
@@ -141,6 +146,7 @@ function Screen() {
               <Route path={Path.Chat} element={<Chat />} />
               <Route path={Path.Settings} element={<Settings />} />
               <Route path={Path.Login} element={<Login />} />
+              <Route path={Path.Register} element={<Register />} />
             </Routes>
           </div>
         </>

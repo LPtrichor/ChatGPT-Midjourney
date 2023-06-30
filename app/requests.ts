@@ -2,6 +2,8 @@
 import { json } from "stream/consumers";
 import type { LoginResponse } from "./api/login/route";
 import type { RegisterResponse } from "./api/register/route";
+
+const API_URL = "http://localhost";
 // import {
 //   //Message,
 //   // ModelConfig,
@@ -164,6 +166,7 @@ export interface RegisterResult {
   code: number;
   message: string;
   data?: any;
+  token?: string;
 }
 
 // export async function requestLogin(
@@ -239,7 +242,7 @@ export async function requestLogin(
 ): Promise<LoginResult> {
   //const openaiUrl = useAccessStore.getState().openaiUrl;
   try {
-    const res = await fetch("http://localhost/api/web_login", {
+    const res = await fetch(API_URL + "/api/web_login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json", //,
@@ -297,6 +300,78 @@ export async function requestLogin(
   }
 }
 
+// export async function requestRegister(
+//   name: string,
+//   username: string,
+//   password: string,
+//   captchaId: string,
+//   captchaInput: string,
+//   email: string,
+//   code: string,
+//   options?: {
+//     onError: (error: Error, statusCode?: number) => void;
+//   },
+// ): Promise<RegisterResult> {
+//   //const openaiUrl = useAccessStore.getState().openaiUrl;
+//   try {
+//     const res = await fetch("/api/register", {
+//       method: "POST",
+//       headers: {
+//         "Content-Type": "application/json", //,
+//         //...getHeaders(),
+//       },
+//       body: JSON.stringify({
+//         name,
+//         username,
+//         password,
+//         captchaId,
+//         captcha: captchaInput,
+//         email,
+//         code,
+//       }), //,
+//       //signal: controller.signal,
+//     });
+//     if (res.status == 200) {
+//       let json: RegisterResponse;
+//       try {
+//         json = (await res.json()) as RegisterResponse;
+//       } catch (e) {
+//         console.error("json formatting failure", e);
+//         options?.onError({
+//           name: "json formatting failure",
+//           message: "json formatting failure",
+//         });
+//         return {
+//           code: -1,
+//           message: "json formatting failure",
+//         };
+//       }
+//       if (json.code != 0) {
+//         options?.onError({
+//           name: json.message,
+//           message: json.message,
+//         });
+//       }
+//       return json;
+//     }
+//     console.error("register result error(2)", res);
+//     options?.onError({
+//       name: "unknown error",
+//       message: "unknown error",
+//     });
+//     return {
+//       code: -1,
+//       message: "unknown error",
+//     };
+//   } catch (err) {
+//     console.error("NetWork Error", err);
+//     options?.onError(err as Error);
+//     return {
+//       code: -1,
+//       message: "NetWork Error",
+//     };
+//   }
+// }
 export async function requestRegister(
   name: string,
   username: string,
@@ -311,7 +386,7 @@ export async function requestRegister(
 ): Promise<RegisterResult> {
   //const openaiUrl = useAccessStore.getState().openaiUrl;
   try {
-    const res = await fetch("/api/register", {
+    const res = await fetch(API_URL + "/api/register", {
       method: "POST",
       headers: {
         "Content-Type": "application/json", //,
@@ -319,19 +394,19 @@ export async function requestRegister(
       },
       body: JSON.stringify({
         name,
-        username,
+        // username,
         password,
-        captchaId,
-        captcha: captchaInput,
+        // captchaId,
+        // captcha: captchaInput,
         email,
         code,
       }), //,
       //signal: controller.signal,
     });
     if (res.status == 200) {
-      let json: RegisterResponse;
+      let json: RegisterResult;
       try {
-        json = (await res.json()) as RegisterResponse;
+        json = (await res.json()) as RegisterResult;
       } catch (e) {
         console.error("json formatting failure", e);
         options?.onError({
@@ -349,16 +424,16 @@ export async function requestRegister(
           message: json.message,
         });
       }
-      return json;
+      return {
+        code: 0,
+        message: "发送成功",
+        token: json.token,
+      };
     }
-    console.error("register result error(2)", res);
-    options?.onError({
-      name: "unknown error",
-      message: "unknown error",
-    });
+    let res_json = (await res.json()) as RegisterResponse;
     return {
       code: -1,
-      message: "unknown error",
+      message: res_json.message,
     };
   } catch (err) {
     console.error("NetWork Error", err);
@@ -370,6 +445,64 @@ export async function requestRegister(
   }
 }
 
+// export async function requestSendEmailCode(
+//   email: string,
+//   options?: {
+//     onError: (error: Error, statusCode?: number) => void;
+//   },
+// ): Promise<RegisterResult> {
+//   //const openaiUrl = useAccessStore.getState().openaiUrl;
+//   try {
+//     const res = await fetch("/api/send_email", {
+//       method: "POST",
+//       headers: {
+//         "Content-Type": "application/json", //,
+//         //...getHeaders(),
+//       },
+//       body: JSON.stringify({ email }), //,
+//       //signal: controller.signal,
+//     });
+//     if (res.status == 200) {
+//       let json: RegisterResponse;
+//       try {
+//         json = (await res.json()) as RegisterResponse;
+//       } catch (e) {
+//         console.error("json formatting failure", e);
+//         options?.onError({
+//           name: "json formatting failure",
+//           message: "json formatting failure",
+//         });
+//         return {
+//           code: -1,
+//           message: "json formatting failure",
+//         };
+//       }
+//       if (json.code != 0) {
+//         options?.onError({
+//           name: json.message,
+//           message: json.message,
+//         });
+//       }
+//       return json;
+//     }
+//     console.error("register result error(2)", res);
+//     options?.onError({
+//       name: "unknown error",
+//       message: "unknown error",
+//     });
+//     return {
+//       code: -1,
+//       message: "unknown error",
+//     };
+//   } catch (err) {
+//     console.error("NetWork Error", err);
+//     options?.onError(err as Error);
+//     return {
+//       code: -1,
+//       message: "NetWork Error",
+//     };
+//   }
+// }
 export async function requestSendEmailCode(
   email: string,
   options?: {
@@ -378,7 +511,7 @@ export async function requestSendEmailCode(
 ): Promise<RegisterResult> {
   //const openaiUrl = useAccessStore.getState().openaiUrl;
   try {
-    const res = await fetch("/api/sendRegisterEmailCode", {
+    const res = await fetch(API_URL + "/api/send_email", {
       method: "POST",
       headers: {
         "Content-Type": "application/json", //,
@@ -388,7 +521,7 @@ export async function requestSendEmailCode(
       //signal: controller.signal,
     });
     if (res.status == 200) {
-      let json: RegisterResponse;
+      let json: RegisterResult;
       try {
         json = (await res.json()) as RegisterResponse;
       } catch (e) {
@@ -410,14 +543,11 @@ export async function requestSendEmailCode(
       }
       return json;
     }
-    console.error("register result error(2)", res);
-    options?.onError({
-      name: "unknown error",
-      message: "unknown error",
-    });
+    let res_json: RegisterResult;
+    res_json = (await res.json()) as RegisterResult;
     return {
       code: -1,
-      message: "unknown error",
+      message: res_json.message,
     };
   } catch (err) {
     console.error("NetWork Error", err);
