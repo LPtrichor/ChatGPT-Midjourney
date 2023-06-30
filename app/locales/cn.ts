@@ -150,6 +150,49 @@ const cn = {
     },
     GoToRegister: "前往注册",
   },
+  Profile: {
+    Title: "个人中心",
+    SubTitle: "个人中心",
+    Username: "账号",
+    Tokens: {
+      Title: "tokens",
+      SubTitle: "tokens数量",
+    },
+    ChatCount: {
+      Title: "询问次数",
+      SubTitle: "询问次数（GPT3.5等）",
+    },
+    AdvanceChatCount: {
+      Title: "询问次数（GPT4）",
+      SubTitle: "询问次数（GPT4）",
+    },
+    DrawCount: {
+      Title: "绘图次数",
+      SubTitle: "绘图次数",
+    },
+    Actions: {
+      Close: "关闭",
+      Pricing: "购买套餐",
+      Order: "订单中心",
+      GoToBalanceList: "更多",
+      ConsultAdministrator: "请咨询站长",
+      All: "所有套餐",
+    },
+    BalanceItem: {
+      Title: "套餐类型",
+      SubTitle: "",
+      CalcTypes: {
+        Total: "总额",
+        Daily: "每天",
+        Hourly: "每小时",
+        ThreeHourly: "每3小时",
+      },
+    },
+    ExpireList: {
+      Title: "到期时间",
+      SubTitle: "",
+    },
+  },
   RegisterPage: {
     Title: "注册",
     SubTitle: "注册后赠送免费额度哦",

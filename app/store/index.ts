@@ -5,3 +5,4 @@ export * from "./config";
 // 登录
 export * from "./auth";
 export * from "./website";
+export * from "./profile";

@@ -17,6 +17,8 @@ export enum Path {
   // 登录相关
   Login = "/login",
   Register = "/register",
+  Balance = "/balance",
+  Profile = "/profile",
 }
 
 export enum SlotID {
