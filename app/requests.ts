@@ -3,7 +3,8 @@ import { json } from "stream/consumers";
 import type { LoginResponse } from "./api/login/route";
 import type { RegisterResponse } from "./api/register/route";
 
-const API_URL = "http://localhost";
+const API_URL = "https://www.rovy.site";
+// const API_URL = "http://localhost";
 // import {
 //   //Message,
 //   // ModelConfig,

@@ -119,9 +119,14 @@ export function SideBar(props: { className?: string }) {
       }`}
     >
       <div className={styles["sidebar-header"]}>
-        <div className={styles["sidebar-title"]}>ChatGPT-Midjourney</div>
+        <div className={styles["sidebar-title"]}>AI百宝箱</div>
         <div className={styles["sidebar-sub-title"]}>
-          Your own AI assistant.
+          😊你的免费私人GPT和Midjourney助理
+          <br />
+          🐱Midjourney功能请在对话框输入: /mj
+          <br />
+          💖欢迎关注公众号“凡尘落微”
+          {/* 💖API KEY购买网址：https://wzw.icu */}
         </div>
         <div className={styles["sidebar-logo"] + " no-dark"}>
           <ChatGptIcon />
@@ -173,11 +178,11 @@ export function SideBar(props: { className?: string }) {
               <IconButton icon={<SettingsIcon />} shadow />
             </Link>
           </div>
-          <div className={styles["sidebar-action"]}>
+          {/* <div className={styles["sidebar-action"]}>
             <a href={REPO_URL} target="_blank">
               <IconButton icon={<GithubIcon />} shadow />
             </a>
-          </div>
+          </div> */}
         </div>
         <div>
           <IconButton
