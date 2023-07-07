@@ -2,9 +2,9 @@
 import { json } from "stream/consumers";
 import type { LoginResponse } from "./api/login/route";
 import type { RegisterResponse } from "./api/register/route";
+import { ADMIN_Default_URL } from "./api/common";
 
-// const API_URL = "https://www.rovy.site";
-const API_URL = "http://127.0.0.1";
+const API_URL = process.env.ADMIN_URL ?? ADMIN_Default_URL;
 // const API_URL = "http://localhost";
 // import {
 //   //Message,

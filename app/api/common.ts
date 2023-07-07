@@ -5,9 +5,11 @@ import { NextRequest } from "next/server";
 
 // const authStore = useAuthStore();
 export const OPENAI_URL = "api.openai.com";
+export const ADMIN_Default_URL = "http://127.0.0.1";
 const DEFAULT_PROTOCOL = "https";
 const PROTOCOL = process.env.PROTOCOL ?? DEFAULT_PROTOCOL;
 const BASE_URL = process.env.BASE_URL ?? OPENAI_URL;
+const ADMIN_URL = process.env.ADMIN_URL ?? ADMIN_Default_URL;
 // 打印上面的所有变量
 // console.log('OPENAI_URL', OPENAI_URL)
 // console.log('DEFAULT_PROTOCOL', DEFAULT_PROTOCOL)
@@ -18,8 +20,8 @@ const BASE_URL = process.env.BASE_URL ?? OPENAI_URL;
 
 // 登录相关
 export async function request(req: NextRequest) {
-  // let baseUrl = BASE_URL;
-  let baseUrl = "http://localhost";
+  let baseUrl = BASE_URL;
+  // let baseUrl = "http://localhost";
 
   if (!baseUrl.startsWith("http")) {
     baseUrl = `${PROTOCOL}://${baseUrl}`;
@@ -65,7 +67,8 @@ export async function requestOpenai(req: NextRequest) {
 
   // let baseUrl = BASE_URL;
   // let baseUrl = 'http://43.135.172.52';
-  let baseUrl = "http://127.0.0.1";
+  // let baseUrl = "http://127.0.0.1";
+  let baseUrl = ADMIN_URL;
 
   if (!baseUrl.startsWith("http")) {
     baseUrl = `${PROTOCOL}://${baseUrl}`;
