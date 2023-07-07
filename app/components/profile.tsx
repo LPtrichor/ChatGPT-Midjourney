@@ -135,7 +135,7 @@ export function Profile() {
         <ListItem title={"每日可使用总次数(GPT3.5)"}>
           <span>{profileStore.limit_send}</span>
         </ListItem>
-        <List></List>
+        {/* <List></List> */}
 
         {/* <List>
           {loading ||
