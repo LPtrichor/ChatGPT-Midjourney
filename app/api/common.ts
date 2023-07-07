@@ -1,24 +1,37 @@
+// "use client";
 import { NextRequest } from "next/server";
+// import { useAuthStore } from "../store";
+// import { use } from "react";
 
+// const authStore = useAuthStore();
 export const OPENAI_URL = "api.openai.com";
 const DEFAULT_PROTOCOL = "https";
 const PROTOCOL = process.env.PROTOCOL ?? DEFAULT_PROTOCOL;
 const BASE_URL = process.env.BASE_URL ?? OPENAI_URL;
+// 打印上面的所有变量
+// console.log('OPENAI_URL', OPENAI_URL)
+// console.log('DEFAULT_PROTOCOL', DEFAULT_PROTOCOL)
+// console.log('PROTOCOL', PROTOCOL)
+// console.log('BASE_URL', BASE_URL)
+//打印process.env.BASE_URL
+// console.log('process.env.BASE_URL', process.env.BASE_URL)
 
 // 登录相关
 export async function request(req: NextRequest) {
   // let baseUrl = BASE_URL;
-  let baseUrl = "http://www.test.com";
+  let baseUrl = "http://localhost";
 
-  // if (!baseUrl.startsWith("http")) {
-  //   baseUrl = `${PROTOCOL}://${baseUrl}`;
-  // }
+  if (!baseUrl.startsWith("http")) {
+    baseUrl = `${PROTOCOL}://${baseUrl}`;
+  }
   const authValue = req.headers.get("Authorization") ?? "";
   const uri = `${req.nextUrl.pathname}${req.nextUrl.search}`.replaceAll(
     "/api/",
-    "",
+    "api/",
   );
-  // console.log(`url = ${baseUrl}/${uri}`)
+  console.log(`url = ${baseUrl}/${uri}`);
+  console.log("这里是common.ts");
+  console.log("[req] ", req);
   return fetch(`${baseUrl}/${uri}`, {
     headers: {
       "Content-Type": "application/json",
@@ -42,17 +55,23 @@ export interface Response<T> {
 export async function requestOpenai(req: NextRequest) {
   const controller = new AbortController();
   const authValue = req.headers.get("Authorization") ?? "";
-  const openaiPath = `${req.nextUrl.pathname}${req.nextUrl.search}`.replaceAll(
-    "/api/openai/",
-    "",
-  );
+  // const authValue = "Bearer " + (authStore.token ?? "");
+  // console.log('authValue', authValue)
+  const openaiPath = "api/send_bot";
+  // const openaiPath = `${req.nextUrl.pathname}${req.nextUrl.search}`.replaceAll(
+  //   "/api/openai/",
+  //   "",
+  // );
 
-  let baseUrl = BASE_URL;
+  // let baseUrl = BASE_URL;
+  // let baseUrl = 'http://43.135.172.52';
+  let baseUrl = "http://127.0.0.1";
 
   if (!baseUrl.startsWith("http")) {
     baseUrl = `${PROTOCOL}://${baseUrl}`;
   }
 
+  console.log("这里是common.ts");
   console.log("[Proxy] ", openaiPath);
   console.log("[Base Url]", baseUrl);
 
@@ -69,18 +88,33 @@ export async function requestOpenai(req: NextRequest) {
     headers: {
       "Content-Type": "application/json",
       Authorization: authValue,
-      ...(process.env.OPENAI_ORG_ID && {
-        "OpenAI-Organization": process.env.OPENAI_ORG_ID,
-      }),
+      // ...(process.env.OPENAI_ORG_ID && {
+      //   "OpenAI-Organization": process.env.OPENAI_ORG_ID,
+      // }),
     },
     cache: "no-store",
     method: req.method,
     body: req.body,
     signal: controller.signal,
   };
-
+  // const fetchOptions: RequestInit = {
+  //   headers: {
+  //     "Content-Type": "application/json",
+  //     Authorization: authValue,
+  //     ...(process.env.OPENAI_ORG_ID && {
+  //       "OpenAI-Organization": process.env.OPENAI_ORG_ID,
+  //     }),
+  //   },
+  //   cache: "no-store",
+  //   method: req.method,
+  //   body: req.body,
+  //   signal: controller.signal,
+  // };
+  console.log("[fetchOptions]", fetchOptions);
+  console.log("[fetchUrl]", fetchUrl);
   try {
     const res = await fetch(fetchUrl, fetchOptions);
+    // const res = await fetch(fetchUrl);
 
     if (res.status === 401) {
       // to prevent browser prompt for credentials

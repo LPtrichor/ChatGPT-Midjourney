@@ -10,6 +10,7 @@ import RenameIcon from "../icons/rename.svg";
 import ExportIcon from "../icons/share.svg";
 import ReturnIcon from "../icons/return.svg";
 import CopyIcon from "../icons/copy.svg";
+import UserIcon from "../icons/user.svg";
 import LoadingIcon from "../icons/three-dots.svg";
 import PromptIcon from "../icons/prompt.svg";
 import MaskIcon from "../icons/mask.svg";
@@ -791,6 +792,13 @@ export function Chat() {
               icon={<RenameIcon />}
               bordered
               onClick={renameSession}
+            />
+          </div>
+          <div className="window-action-button">
+            <IconButton
+              icon={<UserIcon />}
+              bordered
+              onClick={() => navigate(Path.Profile)}
             />
           </div>
           <div className="window-action-button">

@@ -3,7 +3,8 @@ import { json } from "stream/consumers";
 import type { LoginResponse } from "./api/login/route";
 import type { RegisterResponse } from "./api/register/route";
 
-const API_URL = "https://www.rovy.site";
+// const API_URL = "https://www.rovy.site";
+const API_URL = "http://127.0.0.1";
 // const API_URL = "http://localhost";
 // import {
 //   //Message,
@@ -243,6 +244,7 @@ export async function requestLogin(
 ): Promise<LoginResult> {
   //const openaiUrl = useAccessStore.getState().openaiUrl;
   try {
+    // const res = await fetch("/api/web_login", {
     const res = await fetch(API_URL + "/api/web_login", {
       method: "POST",
       headers: {
@@ -387,7 +389,9 @@ export async function requestRegister(
 ): Promise<RegisterResult> {
   //const openaiUrl = useAccessStore.getState().openaiUrl;
   try {
+    console.log("这里是request.ts requestRegister");
     const res = await fetch(API_URL + "/api/register", {
+      // const res = await fetch("/api/register", {
       method: "POST",
       headers: {
         "Content-Type": "application/json", //,
@@ -513,6 +517,7 @@ export async function requestSendEmailCode(
   //const openaiUrl = useAccessStore.getState().openaiUrl;
   try {
     const res = await fetch(API_URL + "/api/send_email", {
+      // const res = await fetch("/api/send_email", {
       method: "POST",
       headers: {
         "Content-Type": "application/json", //,

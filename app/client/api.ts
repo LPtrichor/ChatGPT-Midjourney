@@ -1,6 +1,7 @@
 import { ACCESS_CODE_PREFIX } from "../constant";
 import { ChatMessage, ModelConfig, ModelType, useAccessStore } from "../store";
 import { ChatGPTApi } from "./platforms/openai";
+import { useAuthStore } from "../store";
 
 export const ROLES = ["system", "user", "assistant"] as const;
 export type MessageRole = (typeof ROLES)[number];
@@ -94,6 +95,7 @@ export class ClientApi {
 export const api = new ClientApi();
 
 export function getHeaders() {
+  const authStore = useAuthStore.getState();
   const accessStore = useAccessStore.getState();
   let headers: Record<string, string> = {
     "Content-Type": "application/json",
@@ -103,32 +105,37 @@ export function getHeaders() {
   const makeBearer = (token: string) => `Bearer ${token.trim()}`;
   const validString = (x: string) => x && x.length > 0;
 
+  console.log("authStore", authStore);
+  headers.Authorization = makeBearer(authStore.token);
   // use user's api key first
-  if (validString(accessStore.token)) {
-    headers.Authorization = makeBearer(accessStore.token);
-  } else if (
-    accessStore.enabledAccessControl() &&
-    validString(accessStore.accessCode)
-  ) {
-    headers.Authorization = makeBearer(
-      ACCESS_CODE_PREFIX + accessStore.accessCode,
-    );
-  }
+  // if (validString(accessStore.token)) {
+  //   headers.Authorization = makeBearer(accessStore.token);
+  // } else if (
+  //   accessStore.enabledAccessControl() &&
+  //   validString(accessStore.accessCode)
+  // ) {
+  //   headers.Authorization = makeBearer(
+  //     ACCESS_CODE_PREFIX + accessStore.accessCode,
+  //   );
+  // }
 
-  if(validString(accessStore.midjourneyProxyUrl)){
+  if (validString(accessStore.midjourneyProxyUrl)) {
     headers["midjourney-proxy-url"] = accessStore.midjourneyProxyUrl;
   }
 
   return headers;
 }
 
-export function useGetMidjourneySelfProxyUrl(url:string){
+export function useGetMidjourneySelfProxyUrl(url: string) {
   const accessStore = useAccessStore.getState();
-  if(accessStore.useMjImgSelfProxy){
-    url = url.replace("https://cdn.discordapp.com", "/api/cnd-discordapp")
-    if(accessStore.accessCode){
-      url += (url.includes("?") ? "&" : "?") + "Authorization=" + accessStore.accessCode;
+  if (accessStore.useMjImgSelfProxy) {
+    url = url.replace("https://cdn.discordapp.com", "/api/cnd-discordapp");
+    if (accessStore.accessCode) {
+      url +=
+        (url.includes("?") ? "&" : "?") +
+        "Authorization=" +
+        accessStore.accessCode;
     }
   }
-  return url
+  return url;
 }

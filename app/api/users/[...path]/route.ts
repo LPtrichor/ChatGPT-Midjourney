@@ -42,6 +42,7 @@ export interface ProfileData {
   advancedChatCount: number;
   drawCount: number;
   balances: Balance[];
+  invite_code: string;
 }
 
 export type ProfileResponse = Response<ProfileData>;

@@ -125,12 +125,19 @@ export function Profile() {
             </Popover>
           </ListItem>
 
-          <ListItem title={Locale.Profile.Username}>
-            <span>{authStore.username}</span>
+          <ListItem title={"昵称"}>
+            <span>{profileStore.name}</span>
           </ListItem>
         </List>
+        <ListItem title={"每日已使用次数(GTP3.5)"}>
+          <span>{profileStore.chat_count}</span>
+        </ListItem>
+        <ListItem title={"每日可使用总次数(GPT3.5)"}>
+          <span>{profileStore.limit_send}</span>
+        </ListItem>
+        <List></List>
 
-        <List>
+        {/* <List>
           {loading ||
           (profileStore.balances && profileStore.balances.length === 0) ? (
             <div
@@ -241,7 +248,7 @@ export function Profile() {
           ) : (
             <></>
           )}
-        </List>
+        </List> */}
 
         <List>
           {/* <ListItem>
