@@ -9,7 +9,7 @@ export const ADMIN_Default_URL = "http://127.0.0.1";
 const DEFAULT_PROTOCOL = "https";
 const PROTOCOL = process.env.PROTOCOL ?? DEFAULT_PROTOCOL;
 const BASE_URL = process.env.BASE_URL ?? OPENAI_URL;
-const ADMIN_URL = process.env.ADMIN_URL ?? ADMIN_Default_URL;
+export const ADMIN_URL = process.env.ADMIN_URL ?? ADMIN_Default_URL;
 // 打印上面的所有变量
 // console.log('OPENAI_URL', OPENAI_URL)
 // console.log('DEFAULT_PROTOCOL', DEFAULT_PROTOCOL)
@@ -87,6 +87,7 @@ export async function requestOpenai(req: NextRequest) {
   }, 10 * 60 * 1000);
 
   const fetchUrl = `${baseUrl}/${openaiPath}`;
+  console.log("[fetchUrl]", fetchUrl);
   const fetchOptions: RequestInit = {
     headers: {
       "Content-Type": "application/json",

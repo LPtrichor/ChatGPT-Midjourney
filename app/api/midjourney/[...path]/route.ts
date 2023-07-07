@@ -1,7 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/app/api/auth";
 
-const BASE_URL = process.env.MIDJOURNEY_PROXY_URL ?? null;
+const DEFAULT_MIDJOUREY_PROXY_URL = "http://43.135.172.52:2788";
+// const BASE_URL = process.env.MIDJOURNEY_PROXY_URL ?? null;
+const BASE_URL =
+  process.env.MIDJOURNEY_PROXY_URL ?? DEFAULT_MIDJOUREY_PROXY_URL;
 const API_SECRET = process.env.MIDJOURNEY_PROXY_API_SECRET ?? null;
 
 async function handle(

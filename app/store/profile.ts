@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { Balance, ProfileResponse } from "../api/users/[...path]/route";
 import { StoreKey } from "../constant";
+import { ADMIN_URL } from "../api/common";
 
 export interface ProfileStore {
   id: number;
@@ -27,7 +28,8 @@ export const useProfileStore = create<ProfileStore>()(
         // console.log('token ', token)
         // return fetch("/api/users/profile", {
         return (
-          fetch("http://127.0.0.1/api/get_user", {
+          // fetch("http://127.0.0.1/api/get_user", {
+          fetch(ADMIN_URL + "/api/get_user", {
             method: "get",
             headers: {
               Authorization: "Bearer " + token,
