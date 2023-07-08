@@ -129,12 +129,22 @@ export function Profile() {
             <span>{profileStore.name}</span>
           </ListItem>
         </List>
-        <ListItem title={"每日已使用次数(GTP3.5)"}>
-          <span>{profileStore.chat_count}</span>
-        </ListItem>
-        <ListItem title={"每日可使用总次数(GPT3.5)"}>
-          <span>{profileStore.limit_send}</span>
-        </ListItem>
+        <List>
+          <ListItem title={"每日已使用次数(MJ绘画)"}>
+            <span>{profileStore.draw_count}</span>
+          </ListItem>
+          <ListItem title={"每日可使用总次数(MJ绘画)"}>
+            <span>{profileStore.limit_draw}</span>
+          </ListItem>
+        </List>
+        <List>
+          <ListItem title={"每日已使用次数(GTP3.5)"}>
+            <span>{profileStore.chat_count}</span>
+          </ListItem>
+          <ListItem title={"每日可使用总次数(GPT3.5)"}>
+            <span>{profileStore.limit_send}</span>
+          </ListItem>
+        </List>
         {/* <List></List> */}
 
         {/* <List>

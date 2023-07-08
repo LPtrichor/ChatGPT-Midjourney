@@ -2,7 +2,11 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { Balance, ProfileResponse } from "../api/users/[...path]/route";
 import { StoreKey } from "../constant";
-import { ADMIN_URL } from "../api/common";
+// import { ADMIN_URL } from "../api/common";
+
+const ADMIN_Default_URL = "https://www.admin.rovy.ltd";
+// const ADMIN_Default_URL = "http://127.0.0.1";
+const ADMIN_URL = process.env.ADMIN_URL ?? ADMIN_Default_URL;
 
 export interface ProfileStore {
   id: number;
@@ -10,6 +14,8 @@ export interface ProfileStore {
   invite_code: string;
   limit_send: number;
   chat_count: number;
+  limit_draw: number;
+  draw_count: number;
   fetchProfile: (token: string) => Promise<any>;
 }
 
@@ -23,6 +29,8 @@ export const useProfileStore = create<ProfileStore>()(
       invite_code: "",
       limit_send: 0,
       chat_count: 0,
+      limit_draw: 0,
+      draw_count: 0,
 
       async fetchProfile(token: string) {
         // console.log('token ', token)
@@ -48,6 +56,8 @@ export const useProfileStore = create<ProfileStore>()(
                   invite_code: data.invite_code,
                   limit_send: res.vip.limit_send,
                   chat_count: res.data.chat_count,
+                  limit_draw: res.vip.limit_draw,
+                  draw_count: res.data.draw_count,
                 }));
               } else {
                 console.log("[Profile] set id = 0");

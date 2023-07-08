@@ -757,6 +757,7 @@ export function Chat() {
   });
 
   console.log(messages);
+  // console.log("HIHIHI");
 
   messages?.forEach((msg) => {
     if (msg.model === "midjourney" && msg.attr.taskId) {

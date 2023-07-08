@@ -1,10 +1,15 @@
+"use client";
 // import type { ChatRequest, ChatResponse } from "./api/openai/typing";
 import { json } from "stream/consumers";
 import type { LoginResponse } from "./api/login/route";
 import type { RegisterResponse } from "./api/register/route";
-import { ADMIN_Default_URL } from "./api/common";
-
+// import { ADMIN_Default_URL } from "./api/common";
+import { ADMIN_URL } from "./api/common";
+const ADMIN_Default_URL = "https://www.admin.rovy.ltd";
+// const ADMIN_Default_URL = "http://127.0.0.1";
 const API_URL = process.env.ADMIN_URL ?? ADMIN_Default_URL;
+// const API_URL = process.env.ADMIN_URL;
+// const API_URL = ADMIN_URL;
 // const API_URL = "http://localhost";
 // import {
 //   //Message,
@@ -242,6 +247,7 @@ export async function requestLogin(
     onError: (error: Error, statusCode?: number) => void;
   },
 ): Promise<LoginResult> {
+  console.log("API_URL", API_URL);
   //const openaiUrl = useAccessStore.getState().openaiUrl;
   try {
     // const res = await fetch("/api/web_login", {

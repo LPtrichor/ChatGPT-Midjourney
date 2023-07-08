@@ -78,7 +78,7 @@ async function handle(
       });
     }
 
-    console.log("[MJ Proxy] ", res);
+    // console.log("[MJ Proxy] ", res);
     return res;
   } finally {
     clearTimeout(timeoutId);

@@ -2,7 +2,7 @@
 
 require("../polyfill");
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, use } from "react";
 
 import styles from "./home.module.scss";
 
@@ -120,8 +120,8 @@ function Screen() {
   const location = useLocation();
   const isHome = location.pathname === Path.Home;
   const isMobileScreen = useMobileScreen();
-  const isAuth = location.pathname === Path.Auth;
-
+  // const isAuth = location.pathname === Path.Auth;
+  const isAuth = false;
   useEffect(() => {
     loadAsyncGoogleFont();
   }, []);
