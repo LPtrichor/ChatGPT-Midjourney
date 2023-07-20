@@ -4,9 +4,12 @@ require("../polyfill");
 
 import { useState, useEffect, use } from "react";
 
+import NextImage from "next/image";
+
 import styles from "./home.module.scss";
 
 import BotIcon from "../icons/bot.svg";
+import ChatBotIcon from "../icons/ai-chat-bot.png";
 import LoadingIcon from "../icons/three-dots.svg";
 
 import { getCSSVar, useMobileScreen } from "../utils";
@@ -23,47 +26,86 @@ import {
 } from "react-router-dom";
 import { SideBar } from "./sidebar";
 import { useAppConfig } from "../store/config";
+import { useWebsiteConfigStore, useAuthStore, BOT_HELLO } from "../store";
 import { AuthPage } from "./auth";
 // import { Register } from "./register";
 
-export function Loading(props: { noLogo?: boolean }) {
+// export function Loading(props: { noLogo?: boolean }) {
+//   return (
+//     <div className={styles["loading-content"] + " no-dark"}>
+//       {!props.noLogo && <BotIcon />}
+//       <LoadingIcon />
+//     </div>
+//   );
+// }
+
+export function Loading(props: {
+  noLogo?: boolean;
+  logoLoading: boolean;
+  logoUrl?: string;
+}) {
+  const logoLoading = props.logoLoading;
+  const logoUrl = props.logoUrl;
+  const noLogo = props.noLogo;
+  console.log("Loading logoUrl", noLogo, logoUrl);
   return (
     <div className={styles["loading-content"] + " no-dark"}>
-      {!props.noLogo && <BotIcon />}
+      {!props.noLogo && (
+        <NextImage
+          src={ChatBotIcon.src}
+          width={30}
+          height={30}
+          alt="bot"
+          className="user-avatar"
+        />
+      )}
       <LoadingIcon />
     </div>
   );
 }
 
+//支付相关
+const Pricing = dynamic(async () => (await import("./pricing")).Pricing, {
+  loading: () => <Loading noLogo logoLoading />,
+});
+
+const Pay = dynamic(async () => (await import("./pay")).Pay, {
+  loading: () => <Loading noLogo logoLoading />,
+});
+
+const Order = dynamic(async () => (await import("./order")).Order, {
+  loading: () => <Loading noLogo logoLoading />,
+});
+
 const Login = dynamic(async () => (await import("./login")).Login, {
-  loading: () => <Loading noLogo />,
+  loading: () => <Loading noLogo logoLoading />,
 });
 
 const Register = dynamic(async () => (await import("./register")).Register, {
-  loading: () => <Loading noLogo />,
+  loading: () => <Loading noLogo logoLoading />,
 });
 
 const Profile = dynamic(async () => (await import("./profile")).Profile, {
-  loading: () => <Loading noLogo />,
+  loading: () => <Loading noLogo logoLoading />,
 });
 // const Profile = dynamic(async () => (await import("./profile")).Profile, {
 //   loading: () => <Loading noLogo logoLoading />,
 // });
 
 const Settings = dynamic(async () => (await import("./settings")).Settings, {
-  loading: () => <Loading noLogo />,
+  loading: () => <Loading noLogo logoLoading />,
 });
 
 const Chat = dynamic(async () => (await import("./chat")).Chat, {
-  loading: () => <Loading noLogo />,
+  loading: () => <Loading noLogo logoLoading />,
 });
 
 const NewChat = dynamic(async () => (await import("./new-chat")).NewChat, {
-  loading: () => <Loading noLogo />,
+  loading: () => <Loading noLogo logoLoading />,
 });
 
 const MaskPage = dynamic(async () => (await import("./mask")).MaskPage, {
-  loading: () => <Loading noLogo />,
+  loading: () => <Loading noLogo logoLoading />,
 });
 
 export function useSwitchTheme() {
@@ -155,6 +197,9 @@ function Screen() {
               <Route path={Path.Login} element={<Login />} />
               <Route path={Path.Register} element={<Register />} />
               <Route path={Path.Profile} element={<Profile />} />
+              <Route path={Path.Pricing} element={<Pricing />} />
+              <Route path={Path.Pay} element={<Pay />} />
+              <Route path={Path.Order} element={<Order />} />
             </Routes>
           </div>
         </>
@@ -166,8 +211,14 @@ function Screen() {
 export function Home() {
   useSwitchTheme();
 
+  const [logoLoading, setLogoLoading] = useState(false);
+  const { fetchWebsiteConfig, logoUrl } = useWebsiteConfigStore();
+
   if (!useHasHydrated()) {
-    return <Loading />;
+    return (
+      <Loading noLogo={false} logoLoading={logoLoading} logoUrl={logoUrl} />
+    );
+    // return <Loading />;
   }
 
   return (

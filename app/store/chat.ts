@@ -18,7 +18,7 @@ import { ChatControllerPool } from "../client/controller";
 import { prettyObject } from "../utils/format";
 // import { ADMIN_URL } from "../api/common";
 
-const ADMIN_Default_URL = "https://www.admin.rovy.ltd";
+const ADMIN_Default_URL = "https://www.admin.rovy.me";
 // const ADMIN_Default_URL = "http://127.0.0.1";
 const ADMIN_URL = process.env.ADMIN_URL ?? ADMIN_Default_URL;
 
