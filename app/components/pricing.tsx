@@ -27,6 +27,7 @@ import { useRouter } from "next/navigation";
 // const ADMIN_URL = "http://172.19.16.1";
 const ADMIN_URL = "https://www.admin.rovy.me";
 export let qr_code = "";
+export let order_id = "";
 export let pay_amount = 0;
 
 export interface Package {
@@ -184,6 +185,7 @@ export function Pricing() {
             url,
           )}`;
           qr_code = make_qr_code;
+          order_id = res.out_trade_no;
           pay_amount = parseFloat(pkg.pay_amount);
           navigate(Path.Pay);
         }

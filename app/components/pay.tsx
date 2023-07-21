@@ -15,7 +15,7 @@ import { Path } from "../constant";
 import Locale from "../locales";
 import { showToast } from "./ui-lib";
 
-import { qr_code } from "./pricing";
+import { qr_code, order_id } from "./pricing";
 import { pay_amount } from "./pricing";
 
 export function Pay() {
@@ -38,13 +38,39 @@ export function Pay() {
   useEffect(() => {
     let count = 0;
     const timer = setInterval(() => {
-      count++;
-      console.log(`Timer count: ${count}`);
+      // count++;
+      // console.log(`Timer count: ${count}`);
       if (count === 10) {
-        clearInterval(timer);
-        console.log("Timer stopped");
+        fetch("https://www.admin.rovy.me" + "/api/alipay_return", {
+          method: "post",
+          headers: {
+            Authorization: "Bearer " + authStore.token,
+          },
+          body: JSON.stringify({
+            order_id: order_id,
+          }),
+        })
+          .then((res) => res.json())
+          .then((res) => {
+            const order_status = res.status;
+            console.log("order", order);
+            setOrder(order);
+            setLastOrderState(order.state);
+            if (order_status === 1) {
+              showToast(Locale.PayPage.PaidSuccess);
+              navigate(Path.Balance);
+            }
+            // if (order.state === 5) {
+            //   setQrCode(order.payUrl);
+            //   setPaying(true);
+            // } else {
+            //   setPaying(false);
+            // }
+          });
+        // clearInterval(timer);
+        // console.log("Timer stopped");
       }
-    }, 1000);
+    }, 20000);
     setQrCode(qr_code);
     console.log("测试useEffect状态函数作用", count);
   });
