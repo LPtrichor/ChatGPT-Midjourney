@@ -88,7 +88,7 @@ export async function requestOpenai(req: NextRequest) {
   }, 10 * 60 * 1000);
 
   const fetchUrl = `${baseUrl}/${openaiPath}`;
-  console.log("[fetchUrl]", fetchUrl);
+  console.log("[fetchUrl](common.ts)", fetchUrl);
   const fetchOptions: RequestInit = {
     headers: {
       "Content-Type": "application/json",
@@ -115,8 +115,8 @@ export async function requestOpenai(req: NextRequest) {
   //   body: req.body,
   //   signal: controller.signal,
   // };
-  console.log("[fetchOptions]", fetchOptions);
-  console.log("[fetchUrl]", fetchUrl);
+  // console.log("[fetchOptions]", fetchOptions);
+  // console.log("[fetchUrl]", fetchUrl);
   try {
     const res = await fetch(fetchUrl, fetchOptions);
     // const res = await fetch(fetchUrl);

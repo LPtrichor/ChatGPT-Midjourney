@@ -214,7 +214,7 @@ export function Pricing() {
       .finally(() => {
         setLoading(false);
       });
-    showToast(Locale.PricingPage.ConsultAdministrator);
+    // showToast(Locale.PricingPage.ConsultAdministrator);
   }
 
   return (

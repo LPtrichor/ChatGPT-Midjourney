@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import NextImage from "next/image";
-import WechatPayLogo from "../icons/wechat-pay-logo.png";
+import AlipayLogo from "../icons/alipay-logo.png";
 
 import styles from "./pay.module.scss";
 
@@ -35,45 +35,115 @@ export function Pay() {
   const [qrCode, setQrCode] = useState("");
   const [lastOrderState, setLastOrderState] = useState<number | null>(null);
 
+  // useEffect(() => {
+  //   let timer: NodeJS.Timeout;
+  //   let timeout: NodeJS.Timeout;
+
+  //   const startPolling = () => {
+  //     timer = setInterval(() => {
+  //       console.log("timer内部（pay.tsx）");
+  //       fetch("https://www.admin.rovy.me" + "/api/alipay_return", {
+  //         method: "post",
+  //         headers: {
+  //           Authorization: "Bearer " + authStore.token,
+  //         },
+  //         body: JSON.stringify({
+  //           order_id: order_id,
+  //         }),
+  //       })
+  //         .then((res) => res.json())
+  //         .then((res) => {
+  //           const order_status = res.status;
+  //           console.log("order", order);
+  //           setOrder(order);
+  //           setLastOrderState(order.state);
+  //           if (order_status === 1) {
+  //             showToast(Locale.PayPage.PaidSuccess);
+  //             navigate(Path.Balance);
+  //             clearInterval(timer);
+  //             clearTimeout(timeout);
+  //           }
+  //         });
+  //     }, 5000);
+  //   };
+
+  //   const startTimeout = () => {
+  //     timeout = setTimeout(() => {
+  //       clearInterval(timer);
+  //       showToast("支付超时，请重新支付");
+  //       navigate(Path.Home);
+  //     }, 300000);
+  //   };
+
+  //   startPolling();
+  //   startTimeout();
+
+  //   return () => {
+  //     clearInterval(timer);
+  //     clearTimeout(timeout);
+  //   };
+  // }, []);
+
   useEffect(() => {
     let count = 0;
+    console.log("测试useEffect状态函数作用（pay.tsx）");
     const timer = setInterval(() => {
-      // count++;
-      // console.log(`Timer count: ${count}`);
-      if (count === 10) {
-        fetch("https://www.admin.rovy.me" + "/api/alipay_return", {
-          method: "post",
-          headers: {
-            Authorization: "Bearer " + authStore.token,
-          },
-          body: JSON.stringify({
-            order_id: order_id,
-          }),
-        })
-          .then((res) => res.json())
-          .then((res) => {
-            const order_status = res.status;
-            console.log("order", order);
-            setOrder(order);
-            setLastOrderState(order.state);
-            if (order_status === 1) {
-              showToast(Locale.PayPage.PaidSuccess);
-              navigate(Path.Balance);
-            }
-            // if (order.state === 5) {
-            //   setQrCode(order.payUrl);
-            //   setPaying(true);
-            // } else {
-            //   setPaying(false);
-            // }
-          });
-        // clearInterval(timer);
-        // console.log("Timer stopped");
+      console.log("timer内部（pay.tsx）");
+      count++;
+      // 若用户三分钟没有付款，则停止轮询
+      if (count == 180) {
+        showToast("付款超时，请重新购买");
+        navigate(Path.Pricing);
+        clearInterval(timer);
       }
-    }, 20000);
+      // console.log(`Timer count: ${count}`);
+      fetch("https://www.admin.rovy.me" + "/api/alipay_return", {
+        method: "post",
+        headers: {
+          // Authorization: "Bearer " + authStore.token,
+          // "User-Agent": "PostmanRuntime-ApipostRuntime/1.1.0",
+          Connection: "keep-alive",
+          "Content-Type": "application/json", // 添加 Content-Type 头部
+        },
+        body: JSON.stringify({
+          order_id: order_id,
+        }),
+      })
+        .then((res) => res.json())
+        .then((res) => {
+          const order_status = res.status;
+          // console.log("order", order);
+          // setOrder(order);
+          // setLastOrderState(order.state);
+          if (order_status === 1) {
+            showToast(Locale.PayPage.PaidSuccess);
+            navigate(Path.Home);
+            clearInterval(timer);
+          }
+          // if (order.state === 5) {
+          //   setQrCode(order.payUrl);
+          //   setPaying(true);
+          // } else {
+          //   setPaying(false);
+          // }
+          // console.log("Timer stopped");
+        });
+    }, 1000);
     setQrCode(qr_code);
-    console.log("测试useEffect状态函数作用", count);
-  });
+    // const startTimeout = () => {
+    //   timeout = setTimeout(() => {
+    //     clearInterval(timer);
+    //     showToast("支付超时，请重新支付");
+    //     navigate(Path.Home);
+    //   }, 300000);
+    // };
+    return () => {
+      // console.log("clearInterval");
+      clearInterval(timer);
+    };
+    // console.log("测试useEffect状态函数作用", count);
+    // return () => clearInterval(timer);
+  }, []);
 
   // useEffect(() => {
   //   setLoading(true);
@@ -161,9 +231,9 @@ export function Pay() {
       <div className={styles["pay"]}>
         <div className={styles["container"]}>
           <NextImage
-            src={WechatPayLogo.src}
-            width={127}
-            height={27}
+            src={AlipayLogo.src}
+            width={280}
+            height={70}
             alt="wechat-pay"
           />
           <div style={{ marginTop: "10px" }}>
@@ -187,7 +257,7 @@ export function Pay() {
               Loading
             </div>
           )}
-          <div className={styles["bottom"]}>请使用微信扫码支付</div>
+          <div className={styles["bottom"]}>请使用支付宝扫码支付</div>
         </div>
 
         {order && (
