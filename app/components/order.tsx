@@ -178,19 +178,19 @@ export function Order() {
             pkg.tokens === -1 ? "无限" : pkg.tokens
           }</span> tokens</li>`
         : "") +
-      (pkg.chatCount
+      (pkg.limit_send
         ? `<li>${prefix} <span style="font-size: 18px;">${
-            pkg.chatCount === -1 ? "无限" : pkg.chatCount
+            pkg.limit_send === -1 ? "无限" : pkg.limit_send
           }</span> 次基础聊天（GPT3.5）</li>`
         : "") +
-      (pkg.advancedChatCount
+      (pkg.advancedlimit_send
         ? `<li>${prefix} <span style="font-size: 18px;">${
-            pkg.advancedChatCount === -1 ? "无限" : pkg.advancedChatCount
+            pkg.advancedlimit_send === -1 ? "无限" : pkg.advancedlimit_send
           }</span> 次高级聊天（GPT4）</li>`
         : "") +
-      (pkg.drawCount
+      (pkg.limit_draw
         ? `<li>${prefix} <span style="font-size: 18px;">${
-            pkg.drawCount === -1 ? "无限" : pkg.drawCount
+            pkg.limit_draw === -1 ? "无限" : pkg.limit_draw
           }</span> 次AI绘画</li>`
         : "") +
       `<li>有效期： <span style="font-size: 18px;">${pkg.days}</span> 天</li>` +
