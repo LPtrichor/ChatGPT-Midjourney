@@ -16,6 +16,9 @@ export interface ProfileStore {
   chat_count: number;
   limit_draw: number;
   draw_count: number;
+  money: number;
+  vip_level: string;
+  vip_expire_time: string;
   fetchProfile: (token: string) => Promise<any>;
 }
 
@@ -31,6 +34,9 @@ export const useProfileStore = create<ProfileStore>()(
       chat_count: 0,
       limit_draw: 0,
       draw_count: 0,
+      money: 0,
+      vip_level: "",
+      vip_expire_time: "",
 
       async fetchProfile(token: string) {
         // console.log('token ', token)
@@ -58,6 +64,9 @@ export const useProfileStore = create<ProfileStore>()(
                   chat_count: res.data.chat_count,
                   limit_draw: res.vip.limit_draw,
                   draw_count: res.data.draw_count,
+                  money: res.data.money,
+                  vip_level: res.vip.title,
+                  vip_expire_time: res.vip.expire_time,
                 }));
               } else {
                 console.log("[Profile] set id = 0");

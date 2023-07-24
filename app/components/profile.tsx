@@ -130,6 +130,17 @@ export function Profile() {
           </ListItem>
         </List>
         <List>
+          <ListItem title={"AI币"}>
+            <span>{profileStore.money}</span>
+          </ListItem>
+          <ListItem title={"会员级别"}>
+            <span>{profileStore.vip_level}</span>
+          </ListItem>
+          <ListItem title={"会员到期时间"}>
+            <span>{profileStore.vip_expire_time}</span>
+          </ListItem>
+        </List>
+        <List>
           <ListItem title={"每日已使用次数(MJ绘画)"}>
             <span>{profileStore.draw_count}</span>
           </ListItem>
