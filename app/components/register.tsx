@@ -26,7 +26,7 @@ export function Register() {
   const REG_TYPE_USERNAME_WITH_CAPTCHA = "OnlyUsernameWithCaptcha";
   const REG_TYPE_USERNAME_AND_EMAIL_WITH_CAPTCHA_AND_CODE =
     "UsernameAndEmailWithCaptchaAndCode";
-
+  const [inviteCode, setInviteCode] = useState("");
   const [loadingUsage, setLoadingUsage] = useState(false);
   const [captcha, setCaptcha] = useState("");
 
@@ -209,6 +209,7 @@ export function Register() {
         captchaInput,
         email,
         emailCode,
+        inviteCode,
       )
       .then((result) => {
         console.log("result", result);
@@ -367,6 +368,15 @@ export function Register() {
               placeholder={Locale.RegisterPage.Password.Placeholder}
               onChange={(e) => {
                 setPassword(e.currentTarget.value);
+              }}
+            />
+          </ListItem>
+          <ListItem title={"邀请码"}>
+            <SingleInput
+              value={inviteCode}
+              placeholder={"选填"}
+              onChange={(e) => {
+                setInviteCode(e.currentTarget.value);
               }}
             />
           </ListItem>

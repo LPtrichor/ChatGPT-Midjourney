@@ -19,6 +19,7 @@ export interface AuthStore {
     captchaInput: string,
     email: string,
     code: string,
+    inviteCode?: string,
   ) => Promise<any>;
   removeToken: () => void;
 }
@@ -77,6 +78,7 @@ export const useAuthStore = create<AuthStore>()(
         captchaInput,
         email,
         code,
+        inviteCode,
       ) {
         let result = await requestRegister(
           name,
@@ -86,6 +88,7 @@ export const useAuthStore = create<AuthStore>()(
           captchaInput,
           email,
           code,
+          inviteCode,
           {
             onError: (err) => {
               console.error(err);

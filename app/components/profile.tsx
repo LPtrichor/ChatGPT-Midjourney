@@ -5,6 +5,8 @@ import styles from "./profile.module.scss";
 import CloseIcon from "../icons/close.svg";
 import { Input, List, ListItem, Modal, PasswordInput } from "./ui-lib";
 
+import { copyToClipboard } from "../utils";
+
 import { IconButton } from "./button";
 import {
   useAuthStore,
@@ -127,6 +129,25 @@ export function Profile() {
 
           <ListItem title={"昵称"}>
             <span>{profileStore.name}</span>
+          </ListItem>
+        </List>
+        <List>
+          <ListItem title={"邀请码"}>
+            <>
+              <span>
+                <span style={{ fontWeight: "bold" }}>
+                  {profileStore.invite_code}
+                </span>
+                <span
+                  className={styles["copy-action"]}
+                  onClick={() => {
+                    copyToClipboard(profileStore.invite_code);
+                  }}
+                >
+                  {"  复制"}
+                </span>
+              </span>
+            </>
           </ListItem>
         </List>
         <List>

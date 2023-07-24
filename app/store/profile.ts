@@ -59,7 +59,6 @@ export const useProfileStore = create<ProfileStore>()(
                 set(() => ({
                   id: data.id,
                   name: data.name,
-                  invite_code: data.invite_code,
                   limit_send: res.vip.limit_send,
                   chat_count: res.data.chat_count,
                   limit_draw: res.vip.limit_draw,
@@ -67,6 +66,7 @@ export const useProfileStore = create<ProfileStore>()(
                   money: res.data.money,
                   vip_level: res.vip.title,
                   vip_expire_time: res.vip.expire_time,
+                  invite_code: res.data.invite_code,
                 }));
               } else {
                 console.log("[Profile] set id = 0");

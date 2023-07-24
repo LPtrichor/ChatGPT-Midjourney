@@ -389,6 +389,7 @@ export async function requestRegister(
   captchaInput: string,
   email: string,
   code: string,
+  inviteCode?: string,
   options?: {
     onError: (error: Error, statusCode?: number) => void;
   },
@@ -411,6 +412,7 @@ export async function requestRegister(
         // captcha: captchaInput,
         email,
         code,
+        invite_code: inviteCode,
       }), //,
       //signal: controller.signal,
     });
