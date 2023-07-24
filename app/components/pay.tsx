@@ -240,7 +240,8 @@ export function Pay() {
             {order ? order.title : "套餐购买"}
           </div>
           <div style={{ lineHeight: "50px" }}>
-            ￥<span style={{ fontSize: "32px" }}>{pay_amount}</span>
+            <span style={{ fontSize: "32px" }}>￥</span>
+            <span style={{ fontSize: "32px" }}>{pay_amount}</span>
             {/* ￥<span style={{ fontSize: "32px" }}>{order && order.price}</span> */}
           </div>
           {qrCode && <img src={qrCode} width={230} height={230} alt="qrcode" />}

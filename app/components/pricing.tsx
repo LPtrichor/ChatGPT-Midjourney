@@ -149,6 +149,13 @@ export function Pricing() {
     //     count: 1,
     //   }),
     // })
+    let pay_type = "";
+    if (pkg.calcType == "vip") {
+      pay_type = "vip";
+    } else {
+      pay_type = "charge";
+    }
+    console.log("[pay_type]", pay_type);
     fetch(ADMIN_URL + "/api/alipay", {
       method: "post",
       headers: {
@@ -158,8 +165,8 @@ export function Pricing() {
 
       body: JSON.stringify({
         amount: parseFloat(pkg.pay_amount),
-        type: "vip",
-        // type: "charge",
+        type: pay_type,
+        v_id: pkg.id,
         // uuid: pkg.id
       }),
     })
@@ -218,7 +225,7 @@ export function Pricing() {
       });
     // showToast(Locale.PricingPage.ConsultAdministrator);
   }
-
+  const [amount, setAmount] = useState("");
   return (
     <ErrorBoundary>
       <div className="window-header">
@@ -270,6 +277,72 @@ export function Pricing() {
         ) : (
           <></>
         )}
+        <List>
+          <DangerousListItem
+            title={`<span style="font-size: 20px;">AI币</span>`}
+            subTitle={
+              `<ul style="margin-top: 5px;padding-inline-start: 10px;">` +
+              `<li><span style="font-size: 15px;">一次绘画消耗0.3AI币</span></li>` +
+              `<li><span style="font-size: 15px;">一次聊天消耗0.05AI币</span></li>`
+            }
+          >
+            <div style={{ minWidth: "100px" }}>
+              {/* <div
+                              style={{
+                                margin: "10px",
+                                fontSize: "24px",
+                                textAlign: "center",
+                              }}
+                            >
+                              ￥{50}
+                            </div> */}
+              <div
+                style={{
+                  marginBottom: "15px",
+                  margin: "10px",
+                  fontSize: "24px",
+                  textAlign: "center",
+                }}
+              >
+                <input
+                  type="text"
+                  placeholder="请输入充值金额"
+                  value={amount}
+                  onChange={(e) => setAmount(e.target.value)}
+                  style={{ fontSize: "16px", fontWeight: "bold" }}
+                />
+                <IconButton
+                  style={{ float: "right", marginBottom: "15px" }}
+                  disabled={loading}
+                  text={"购买AI币"}
+                  type="primary"
+                  block={true}
+                  onClick={() => {
+                    const myPackage: Package = {
+                      id: 0,
+                      state: 0,
+                      calcType: "vip",
+                      calcTypeId: 0,
+                      limit_draw: 0,
+                      limit_send: 0,
+                      advancedlimit_send: 0,
+                      tokens: 0,
+                      price: amount,
+                      title: "",
+                      subTitle: "",
+                      uuid: "",
+                      top: 0,
+                      days: "",
+                      end_time: 0,
+                      pay_amount: amount,
+                    };
+                    handleClickBuy(myPackage);
+                  }}
+                />
+              </div>
+            </div>
+          </DangerousListItem>
+        </List>
         {packages.map((item) => {
           return (
             <List key={item.uuid}>
@@ -300,6 +373,50 @@ export function Pricing() {
             </List>
           );
         })}
+        {/* <List>
+              <DangerousListItem title={'标题'} subTitle={'小标题'}>
+                <div style={{ minWidth: "100px" }}>
+                  <div
+                    style={{
+                      margin: "10px",
+                      fontSize: "24px",
+                      textAlign: "center",
+                    }}
+                  >
+                    ￥{50}
+                  </div>
+                  <div style={{ marginBottom: "15px" }}>
+                    <IconButton
+                      text={Locale.PricingPage.Actions.Buy}
+                      type="primary"
+                      block={true}
+                      disabled={loading}
+                      onClick={() => {
+                        const myPackage: Package = {
+                          id: 0,
+                          state: 0,
+                          calcType: "",
+                          calcTypeId: 0,
+                          drawCount: 0,
+                          chatCount: 0,
+                          advancedChatCount: 0,
+                          tokens: 0,
+                          price: "",
+                          title: "",
+                          subTitle: "",
+                          uuid: "",
+                          top: 0,
+                          days: "",
+                          end_time: 0,
+                          pay_amount: "50",
+                        };
+                        handleClickBuy(myPackage);
+                      }}
+                    />
+                  </div>
+                </div>
+              </DangerousListItem>
+            </List> */}
 
         {/* <List>
           <ListItem>
