@@ -35,9 +35,9 @@ export interface Package {
   state: number;
   calcType: string;
   calcTypeId: number;
-  drawCount: number;
-  chatCount: number;
-  advancedChatCount: number;
+  limit_draw: number;
+  limit_send: number;
+  advancedlimit_send: number;
   tokens: number;
   price: string;
   title: string;
@@ -97,7 +97,8 @@ export function Pricing() {
                 2: "每天",
                 3: "每小时",
                 4: "每3小时",
-              }[pkg.calcTypeId];
+              }[2];
+              // }[pkg.calcTypeId];
               pkg.subTitle =
                 `<ul style="margin-top: 5px;padding-inline-start: 10px;">` +
                 (pkg.tokens
@@ -105,21 +106,21 @@ export function Pricing() {
                       pkg.tokens === -1 ? "无限" : pkg.tokens
                     }</span> tokens</li>`
                   : "") +
-                (pkg.chatCount
+                (pkg.limit_send
                   ? `<li>${prefix} <span style="font-size: 18px;">${
-                      pkg.chatCount === -1 ? "无限" : pkg.chatCount
+                      pkg.limit_send === -1 ? "无限" : pkg.limit_send
                     }</span> 次基础聊天（GPT3.5）</li>`
                   : "") +
-                (pkg.advancedChatCount
+                (pkg.advancedlimit_send
                   ? `<li>${prefix} <span style="font-size: 18px;">${
-                      pkg.advancedChatCount === -1
+                      pkg.advancedlimit_send === -1
                         ? "无限"
-                        : pkg.advancedChatCount
+                        : pkg.advancedlimit_send
                     }</span> 次高级聊天（GPT4）</li>`
                   : "") +
-                (pkg.drawCount
+                (pkg.limit_draw
                   ? `<li>${prefix} <span style="font-size: 18px;">${
-                      pkg.drawCount === -1 ? "无限" : pkg.drawCount
+                      pkg.limit_draw === -1 ? "无限" : pkg.limit_draw
                     }</span> 次AI绘画</li>`
                   : "") +
                 `<li>有效期： <span style="font-size: 18px;">${pkg.end_time}</span> 天</li>` +
@@ -157,7 +158,8 @@ export function Pricing() {
 
       body: JSON.stringify({
         amount: parseFloat(pkg.pay_amount),
-        type: "charge",
+        type: "vip",
+        // type: "charge",
         // uuid: pkg.id
       }),
     })
