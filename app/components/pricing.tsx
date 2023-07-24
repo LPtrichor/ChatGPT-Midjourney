@@ -321,7 +321,7 @@ export function Pricing() {
                     const myPackage: Package = {
                       id: 0,
                       state: 0,
-                      calcType: "vip",
+                      calcType: "charge",
                       calcTypeId: 0,
                       limit_draw: 0,
                       limit_send: 0,
