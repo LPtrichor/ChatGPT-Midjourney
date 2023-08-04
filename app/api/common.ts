@@ -6,11 +6,12 @@ import { NextRequest } from "next/server";
 // const authStore = useAuthStore();
 export const OPENAI_URL = "api.openai.com";
 // export const ADMIN_Default_URL = "http://127.0.0.1";
-export const ADMIN_Default_URL = "https://www.admin.rovy.me";
 const DEFAULT_PROTOCOL = "https";
-const PROTOCOL = process.env.PROTOCOL ?? DEFAULT_PROTOCOL;
 const BASE_URL = process.env.BASE_URL ?? OPENAI_URL;
-export const ADMIN_URL = process.env.ADMIN_URL ?? ADMIN_Default_URL;
+const PROTOCOL = process.env.PROTOCOL ?? DEFAULT_PROTOCOL;
+// export const ADMIN_Default_URL = "https://www.admin.rovy.me";
+export const ADMIN_Default_URL = "http://127.0.0.1";
+export const ADMIN_URL = process.env.NEXT_PUBLIC_BASE_URL ?? ADMIN_Default_URL;
 // 打印上面的所有变量
 // console.log('OPENAI_URL', OPENAI_URL)
 // console.log('DEFAULT_PROTOCOL', DEFAULT_PROTOCOL)

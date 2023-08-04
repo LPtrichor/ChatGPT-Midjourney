@@ -18,6 +18,13 @@ import { showToast } from "./ui-lib";
 import { qr_code, order_id } from "./pricing";
 import { pay_amount } from "./pricing";
 
+// export const ADMIN_Default_URL = "https://www.admin.rovy.me";
+export const ADMIN_Default_URL = "http://127.0.0.1";
+export const ADMIN_URL = process.env.NEXT_PUBLIC_BASE_URL ?? ADMIN_Default_URL;
+
+// import dotenv from "dotenv";
+// dotenv.config();
+
 export function Pay() {
   const navigate = useNavigate();
   const authStore = useAuthStore();
@@ -97,7 +104,8 @@ export function Pay() {
         clearInterval(timer);
       }
       // console.log(`Timer count: ${count}`);
-      fetch("https://www.admin.rovy.me" + "/api/alipay_return", {
+      console.log("[env(pay.tsx)]", process.env.NEXT_PUBLIC_BASE_URL);
+      fetch(ADMIN_URL + "/api/alipay_return", {
         method: "post",
         headers: {
           // Authorization: "Bearer " + authStore.token,
