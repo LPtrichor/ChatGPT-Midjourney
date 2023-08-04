@@ -19,8 +19,8 @@ import { prettyObject } from "../utils/format";
 // import { ADMIN_URL } from "../api/common";
 
 // export const ADMIN_Default_URL = "https://www.admin.rovy.me";
-export const ADMIN_Default_URL = "http://127.0.0.1";
-export const ADMIN_URL = process.env.NEXT_PUBLIC_BASE_URL ?? ADMIN_Default_URL;
+const ADMIN_Default_URL = "http://127.0.0.1";
+const ADMIN_URL = process.env.NEXT_PUBLIC_BASE_URL ?? ADMIN_Default_URL;
 
 export type ChatMessage = RequestMessage & {
   date: string;

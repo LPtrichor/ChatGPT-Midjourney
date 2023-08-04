@@ -5,8 +5,8 @@ import type { LoginResponse } from "./api/login/route";
 import type { RegisterResponse } from "./api/register/route";
 
 // export const ADMIN_Default_URL = "https://www.admin.rovy.me";
-export const ADMIN_Default_URL = "http://127.0.0.1";
-export const ADMIN_URL = process.env.NEXT_PUBLIC_BASE_URL ?? ADMIN_Default_URL;
+const ADMIN_Default_URL = "http://127.0.0.1";
+const ADMIN_URL = process.env.NEXT_PUBLIC_BASE_URL ?? ADMIN_Default_URL;
 // import { ADMIN_Default_URL } from "./api/common";
 // import { ADMIN_URL } from "./api/common";
 // const ADMIN_Default_URL = "https://www.admin.rovy.me";
