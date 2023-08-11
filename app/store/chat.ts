@@ -281,6 +281,17 @@ export const useChatStore = create<ChatStore>()(
             );
             switch (statusResJson?.status) {
               case "SUCCESS":
+                // 绘画成功则记录图片地址
+                const requestBody = {
+                  description: statusResJson?.description,
+                  imageUrl: statusResJson?.imageUrl,
+                  prompt: statusResJson?.prompt,
+                };
+                const res_ctrl = await fetch(ADMIN_URL + "/api/ai_draw", {
+                  method: "POST",
+                  headers: getHeaders(),
+                  body: JSON.stringify(requestBody),
+                });
                 content = statusResJson.imageUrl;
                 isFinished = true;
                 if (statusResJson.imageUrl) {
@@ -472,8 +483,9 @@ export const useChatStore = create<ChatStore>()(
                   const requestBody = {
                     action: action,
                     prompt: prompt,
+                    image: "",
                   };
-
+                  console.log("[requesrfBody(chat.ts)]", requestBody);
                   const res_ctrl = await fetch(ADMIN_URL + "/api/ai_draw", {
                     method: "POST",
                     headers: getHeaders(),
