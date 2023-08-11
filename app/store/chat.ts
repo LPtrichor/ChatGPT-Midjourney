@@ -286,6 +286,7 @@ export const useChatStore = create<ChatStore>()(
                   description: statusResJson?.description,
                   imageUrl: statusResJson?.imageUrl,
                   prompt: statusResJson?.prompt,
+                  action: statusResJson?.action,
                 };
                 const res_ctrl = await fetch(ADMIN_URL + "/api/ai_draw", {
                   method: "POST",
