@@ -282,6 +282,7 @@ export const useChatStore = create<ChatStore>()(
             switch (statusResJson?.status) {
               case "SUCCESS":
                 // 绘画成功则记录图片地址
+                // console.log('绘画成功则记录图片地址');
                 const requestBody = {
                   description: statusResJson?.description,
                   imageUrl: statusResJson?.imageUrl,
@@ -484,7 +485,7 @@ export const useChatStore = create<ChatStore>()(
                   const requestBody = {
                     action: action,
                     prompt: prompt,
-                    image: "",
+                    imageUrl: "",
                   };
                   console.log("[requesrfBody(chat.ts)]", requestBody);
                   const res_ctrl = await fetch(ADMIN_URL + "/api/ai_draw", {
