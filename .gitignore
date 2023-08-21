@@ -43,3 +43,5 @@ dev
 .env
 
 /app/Rovy
+/app/hello
+NavBar.tsx

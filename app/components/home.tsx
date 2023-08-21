@@ -88,6 +88,10 @@ const Register = dynamic(async () => (await import("./register")).Register, {
 const Profile = dynamic(async () => (await import("./profile")).Profile, {
   loading: () => <Loading noLogo logoLoading />,
 });
+// test
+const Test = dynamic(async () => (await import("./test")).NavBar, {
+  loading: () => <Loading noLogo logoLoading />,
+});
 // const Profile = dynamic(async () => (await import("./profile")).Profile, {
 //   loading: () => <Loading noLogo logoLoading />,
 // });
@@ -200,6 +204,7 @@ function Screen() {
               <Route path={Path.Pricing} element={<Pricing />} />
               <Route path={Path.Pay} element={<Pay />} />
               <Route path={Path.Order} element={<Order />} />
+              <Route path={Path.Test} element={<Test />} />
             </Routes>
           </div>
         </>

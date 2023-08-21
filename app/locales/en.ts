@@ -45,6 +45,7 @@ const en: RequiredLocaleType = {
     TaskProgressTip: (progress: number | undefined) =>
       `Task is running${progress ? `, current progress: ${progress}` : ""}`,
     TaskNotStart: "Task has not started",
+    Retry: "Retry",
     Url: "URL",
     SettingProxyCoverTip:
       "The MidjourneyProxy address defined here will override the MIDJOURNEY_PROXY_URL in the environment variables",

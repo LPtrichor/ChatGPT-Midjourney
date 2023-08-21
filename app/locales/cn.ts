@@ -44,6 +44,7 @@ const cn = {
     TaskProgressTip: (progress: number | undefined) =>
       `任务正在运行${progress ? `，当前进度：${progress}` : ""}`,
     TaskNotStart: "任务尚未开始",
+    Retry: "重试",
     Url: "地址",
     SettingProxyCoverTip:
       "在此处定义的MidjourneyProxy地址会覆盖环境变量中的MIDJOURNEY_PROXY_URL",
