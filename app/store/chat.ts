@@ -555,41 +555,40 @@ export const useChatStore = create<ChatStore>()(
                     imageUrl: "",
                   };
                   console.log("[requesrfBody(chat.ts)]", requestBody);
-                  const res_ctrl = await fetch(ADMIN_URL + "/api/ai_draw", {
-                    method: "POST",
-                    headers: getHeaders(),
-                    body: JSON.stringify(requestBody),
-                  })
-                    .then((response) => {
-                      // console.log('[response]', response);
-                      // if (!response.ok) {
-                      //     throw new Error("Network response was not ok");
-                      // }
-                      return response.json();
-                    })
-                    // .then((data) => {
-                    //     console.log(data);
-                    // })
-                    .catch((error) => {
-                      console.error(
-                        "There was a problem with the fetch operation:",
-                        error,
-                      );
-                    });
-                  console.log("res_ctrl", res_ctrl);
-                  console.log("res_ctrl.status", res_ctrl.status);
-                  if (res_ctrl.status != 200) {
-                    botMessage.content = res_ctrl.message;
-                    botMessage.streaming = false;
-                    return;
-                  }
-                  // break;
-                  // if(res_ctrl.status != 200){
+                  // const res_ctrl = await fetch(ADMIN_URL + "/api/ai_draw", {
+                  //   method: "POST",
+                  //   headers: getHeaders(),
+                  //   body: JSON.stringify(requestBody),
+                  // })
+                  //   .then((response) => {
+                  //     // console.log('[response]', response);
+                  //     // if (!response.ok) {
+                  //     //     throw new Error("Network response was not ok");
+                  //     // }
+                  //     return response.json();
+                  //   })
+                  //   // .then((data) => {
+                  //   //     console.log(data);
+                  //   // })
+                  //   .catch((error) => {
+                  //     console.error(
+                  //       "There was a problem with the fetch operation:",
+                  //       error,
+                  //     );
+                  //   });
+                  // console.log("res_ctrl", res_ctrl);
+                  // console.log("res_ctrl.status", res_ctrl.status);
+                  // if (res_ctrl.status != 200) {
+                  //   botMessage.content = res_ctrl.message;
+                  //   botMessage.streaming = false;
+                  //   return;
+                  // }
                   res = await reqFn(
                     "submit/imagine",
                     "POST",
                     JSON.stringify({
                       prompt: prompt,
+                      action: action,
                       base64: extAttr?.useImages?.[0]?.base64 ?? null,
                     }),
                   );
@@ -600,6 +599,7 @@ export const useChatStore = create<ChatStore>()(
                     "submit/describe",
                     "POST",
                     JSON.stringify({
+                      action: action,
                       base64: extAttr.useImages[0].base64,
                     }),
                   );
@@ -610,6 +610,7 @@ export const useChatStore = create<ChatStore>()(
                     "submit/blend",
                     "POST",
                     JSON.stringify({
+                      action: action,
                       base64Array: [
                         extAttr.useImages[0].base64,
                         extAttr.useImages[1].base64,
@@ -625,6 +626,7 @@ export const useChatStore = create<ChatStore>()(
                     JSON.stringify({
                       index: actionIndex,
                       origin_task_id: actionUseTaskId,
+                      action: action,
                     }),
                   );
                   break;
@@ -633,6 +635,7 @@ export const useChatStore = create<ChatStore>()(
                     "submit/variation",
                     "POST",
                     JSON.stringify({
+                      action: action,
                       index: actionIndex,
                       origin_task_id: actionUseTaskId,
                     }),
@@ -643,6 +646,7 @@ export const useChatStore = create<ChatStore>()(
                     "submit/upscale",
                     "POST",
                     JSON.stringify({
+                      action: action,
                       index: actionIndex,
                       origin_task_id: actionUseTaskId,
                     }),

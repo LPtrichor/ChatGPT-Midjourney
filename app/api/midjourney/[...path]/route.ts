@@ -3,12 +3,12 @@ import { auth } from "@/app/api/auth";
 import path from "path";
 
 // const DEFAULT_MIDJOUREY_PROXY_URL = "http://43.135.172.52:2788";
-const DEFAULT_MIDJOUREY_PROXY_URL = "https://api.midjourneyapi.xyz";
+// const DEFAULT_MIDJOUREY_PROXY_URL = "https://api.midjourneyapi.xyz";
+const DEFAULT_MIDJOUREY_PROXY_URL = "http://127.0.0.1/api/ai_draw_mj";
 // const BASE_URL = process.env.MIDJOURNEY_PROXY_URL ?? null;
 const BASE_URL =
   process.env.MIDJOURNEY_PROXY_URL ?? DEFAULT_MIDJOUREY_PROXY_URL;
 // const API_SECRET = process.env.MIDJOURNEY_PROXY_API_SECRET ?? null;
-const API_SECRET = "4db7fdb8-3af2-4bad-915d-cc3d5b2d0ce7";
 
 async function handle(
   req: NextRequest,
@@ -16,14 +16,16 @@ async function handle(
 ) {
   console.log("[Midjourney Route] params ", params);
   // 模拟返回
-  if (params.path[2] === "imagine") {
-    return NextResponse.json({
-      message: "",
-      status: "success",
-      task_id: "56540308-2102-4efa-8a2d-ecee93d860b3",
-      data: params.path[2],
-    });
-  }
+  // if (params.path[2] === "imagine") {
+  //   return NextResponse.json({
+  //     message: "",
+  //     status: "success",
+  //     task_id: "56540308-2102-4efa-8a2d-ecee93d860b3",
+  //     data: params.path[2],
+  //     params: params,
+  //     req: req.body
+  //   });
+  // }
   // return NextResponse.json(
   //   {
   //     error: false,
@@ -70,7 +72,8 @@ async function handle(
     "mj/v2",
   );
 
-  let fetchUrl = `${mjProxyUrl}/${reqPath}`;
+  // let fetchUrl = `${mjProxyUrl}/${reqPath}`;
+  let fetchUrl = `${mjProxyUrl}`;
 
   console.log("[MJ Proxy] ", fetchUrl);
   const controller = new AbortController();
@@ -78,11 +81,15 @@ async function handle(
     controller.abort();
   }, 10 * 60 * 1000);
 
+  // const newBody = { ...req.body, fetchUrl };
+  // return NextResponse.json({
+  //   data: newBody,
+  // });
   const fetchOptions: RequestInit = {
     //@ts-ignore
     headers: {
       "Content-Type": "application/json",
-      "x-api-key": API_SECRET,
+      Authorization: req.headers.get("Authorization") ?? "",
     },
     cache: "no-store",
     method: req.method,

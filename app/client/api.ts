@@ -119,9 +119,9 @@ export function getHeaders() {
   //   );
   // }
 
-  if (validString(accessStore.midjourneyProxyUrl)) {
-    headers["midjourney-proxy-url"] = accessStore.midjourneyProxyUrl;
-  }
+  // if (validString(accessStore.midjourneyProxyUrl)) {
+  //   headers["midjourney-proxy-url"] = accessStore.midjourneyProxyUrl;
+  // }
 
   return headers;
 }
