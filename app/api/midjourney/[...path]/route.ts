@@ -4,7 +4,7 @@ import path from "path";
 
 // const DEFAULT_MIDJOUREY_PROXY_URL = "http://43.135.172.52:2788";
 // const DEFAULT_MIDJOUREY_PROXY_URL = "https://api.midjourneyapi.xyz";
-const DEFAULT_MIDJOUREY_PROXY_URL = "http://127.0.0.1/api/ai_draw_mj";
+const DEFAULT_MIDJOUREY_PROXY_URL = "";
 // const BASE_URL = process.env.MIDJOURNEY_PROXY_URL ?? null;
 const BASE_URL =
   process.env.MIDJOURNEY_PROXY_URL ?? DEFAULT_MIDJOUREY_PROXY_URL;
@@ -15,6 +15,11 @@ async function handle(
   { params }: { params: { path: string[] } },
 ) {
   console.log("[Midjourney Route] params ", params);
+  // return NextResponse.json(
+  //   {
+  //     BASE_URL: BASE_URL,
+  //   }
+  // );
   // 模拟返回
   // if (params.path[2] === "imagine") {
   //   return NextResponse.json({
@@ -60,17 +65,17 @@ async function handle(
     );
   }
 
-  const authResult = auth(req, false);
-  if (authResult.error) {
-    return NextResponse.json(authResult, {
-      status: 401,
-    });
-  }
+  // const authResult = auth(req, false);
+  // if (authResult.error) {
+  //   return NextResponse.json(authResult, {
+  //     status: 401,
+  //   });
+  // }
 
-  const reqPath = `${req.nextUrl.pathname}${req.nextUrl.search}`.replaceAll(
-    "/api/midjourney/mj/submit",
-    "mj/v2",
-  );
+  // const reqPath = `${req.nextUrl.pathname}${req.nextUrl.search}`.replaceAll(
+  //   "/api/midjourney/mj/submit",
+  //   "mj/v2",
+  // );
 
   // let fetchUrl = `${mjProxyUrl}/${reqPath}`;
   let fetchUrl = `${mjProxyUrl}`;
