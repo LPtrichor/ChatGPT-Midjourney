@@ -128,6 +128,10 @@ export const ALL_MODELS = [
     name: "midjourney", // midjourney
     available: true,
   },
+  {
+    name: "stable_diffusion", // stable_diffusion
+    available: true,
+  },
 ] as const;
 
 export type ModelType = (typeof ALL_MODELS)[number]["name"];

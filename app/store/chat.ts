@@ -94,6 +94,7 @@ const ChatFetchTaskPool: Record<string, any> = {};
 
 interface ChatStore {
   fetchMidjourneyStatus(botMessage: ChatMessage, extAttr?: any): void;
+  fetchStableDiffusionStatus(botMessage: ChatMessage, extAttr?: any): void;
 
   sessions: ChatSession[];
   currentSessionIndex: number;
@@ -426,6 +427,179 @@ export const useChatStore = create<ChatStore>()(
         }, 3000);
       },
 
+      fetchStableDiffusionStatus(botMessage: ChatMessage, extAttr?: any) {
+        const taskId = botMessage?.attr?.taskId;
+        // if (
+        //   !taskId ||
+        //   ["SUCCESS", "FAILURE"].includes(botMessage?.attr?.status) ||
+        //   ChatFetchTaskPool[taskId]
+        // )
+        if (
+          !taskId ||
+          ["finished", "failed"].includes(botMessage?.attr?.status) ||
+          ChatFetchTaskPool[taskId]
+        )
+          return;
+        ChatFetchTaskPool[taskId] = setTimeout(async () => {
+          ChatFetchTaskPool[taskId] = null;
+          const statusRes = await fetch(
+            `https://api.midjourneyapi.xyz/sd/fetch`,
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                id: taskId,
+              }),
+            },
+          );
+          // const statusRes = await fetch(
+          //   `/api/midjourney/mj/task/${taskId}/fetch`,
+          //   {
+          //     method: "GET",
+          //     headers: getHeaders(),
+          //   },
+          // );
+          const statusResJson = await statusRes.json();
+          if (statusRes.status < 200 || statusRes.status >= 300) {
+            botMessage.content =
+              Locale.Midjourney.TaskStatusFetchFail +
+                ": " +
+                (statusResJson?.error || statusResJson?.description) ||
+              Locale.Midjourney.UnknownReason;
+          } else {
+            let isFinished = false;
+            let content;
+            // const prefixContent = Locale.Midjourney.TaskPrefix(
+            //   statusResJson.prompt,
+            //   taskId,
+            // );
+            const prefixContent = Locale.Midjourney.TaskPrefix(
+              botMessage.attr.prompt,
+              taskId,
+            );
+            console.log("statusResJson", statusResJson);
+            switch (statusResJson?.status) {
+              // case "SUCCESS":
+              case "success":
+                // 绘画成功则记录图片地址
+                // console.log('绘画成功则记录图片地址');
+                const requestBody = {
+                  description: botMessage.attr.prompt,
+                  imageUrl: statusResJson?.output[0],
+                  prompt: botMessage.attr.prompt || "GoAPI接口暂无prompt",
+                  action: "sd-txt2img",
+                };
+                // const requestBody = {
+                //   description: statusResJson?.description,
+                //   imageUrl: statusResJson?.imageUrl,
+                //   prompt: statusResJson?.prompt,
+                //   action: statusResJson?.action,
+                // };
+                // 需要修改prompt字段
+                const res_ctrl = await fetch(ADMIN_URL + "/api/ai_draw", {
+                  method: "POST",
+                  headers: getHeaders(),
+                  body: JSON.stringify(requestBody),
+                });
+                // content = statusResJson.imageUrl;
+                content = statusResJson.output;
+                isFinished = true;
+                // if (statusResJson.imageUrl) {
+                if (statusResJson.output) {
+                  // let imgUrl = useGetMidjourneySelfProxyUrl(
+                  //   statusResJson.imageUrl,
+                  // );
+                  let imgUrl = statusResJson.output;
+                  botMessage.attr.imgUrl = imgUrl;
+                  botMessage.content =
+                    prefixContent + `[![${taskId}](${imgUrl})](${imgUrl})`;
+                }
+                // if (
+                //   statusResJson.action === "DESCRIBE" &&
+                //   statusResJson.prompt
+                // ) {
+                //   botMessage.content += `\n${statusResJson.prompt}`;
+                // }
+                break;
+              case "failed":
+                content =
+                  // statusResJson.failReason || Locale.Midjourney.UnknownReason;
+                  "图像生成失败" || Locale.Midjourney.UnknownReason;
+                isFinished = true;
+                botMessage.content =
+                  prefixContent +
+                  `**${
+                    Locale.Midjourney.TaskStatus
+                  }:** [${new Date().toLocaleString()}] - ${content}`;
+                break;
+              case "retry":
+                content = Locale.Midjourney.Retry;
+                break;
+              case "processing":
+                content = Locale.Midjourney.TaskProgressTip(
+                  statusResJson.progress,
+                );
+                break;
+              case "pending":
+                content = Locale.Midjourney.TaskRemoteSubmit;
+                break;
+              // case "FAILURE":
+              //   content =
+              //     statusResJson.failReason || Locale.Midjourney.UnknownReason;
+              //   isFinished = true;
+              //   botMessage.content =
+              //     prefixContent +
+              //     `**${Locale.Midjourney.TaskStatus
+              //     }:** [${new Date().toLocaleString()}] - ${content}`;
+              //   break;
+              // case "NOT_START":
+              //   content = Locale.Midjourney.TaskNotStart;
+              //   break;
+              // case "IN_PROGRESS":
+              //   content = Locale.Midjourney.TaskProgressTip(
+              //     statusResJson.progress,
+              //   );
+              //   break;
+              // case "SUBMITTED":
+              //   content = Locale.Midjourney.TaskRemoteSubmit;
+              //   break;
+              default:
+                content = statusResJson.status;
+            }
+            // botMessage.attr.status = statusResJson.status;
+            botMessage.attr.status = statusResJson.status;
+            if (isFinished) {
+              botMessage.attr.finished = true;
+            } else {
+              botMessage.content =
+                prefixContent +
+                `**${
+                  Locale.Midjourney.TaskStatus
+                }:** [${new Date().toLocaleString()}] - ${content}`;
+              // if (
+              //   statusResJson.status === "IN_PROGRESS" &&
+              //   statusResJson.imageUrl
+              // ) {
+              if (statusResJson.status === "processing") {
+                // let imgUrl = statusResJson?.task_result.image_url;
+                // let imgUrl = useGetMidjourneySelfProxyUrl(
+                //   statusResJson.imageUrl,
+                // );
+                botMessage.content += `\n图像正在生成中，请稍等片刻....`;
+                // botMessage.attr.imgUrl = imgUrl;
+                // botMessage.content += `\n[![${taskId}](${imgUrl})](${imgUrl})`;
+              }
+              console.log("fetchStableDiffusionStatus", botMessage);
+              this.fetchStableDiffusionStatus(botMessage, extAttr);
+            }
+            set(() => ({}));
+            if (isFinished) {
+              extAttr?.setAutoScroll(true);
+            }
+          }
+        }, 3000);
+      },
+
       async onUserInput(content, extAttr?: any) {
         const session = get().currentSession();
         const modelConfig = session.mask.modelConfig;
@@ -494,6 +668,8 @@ export const useChatStore = create<ChatStore>()(
         // console.log("Hello, world!");
         console.log("[User Input] ", sendMessages);
         if (
+          content.toLowerCase().startsWith("mj") ||
+          content.toLowerCase().startsWith("MJ") ||
           content.toLowerCase().startsWith("/mj") ||
           content.toLowerCase().startsWith("/MJ")
         ) {
@@ -696,6 +872,8 @@ export const useChatStore = create<ChatStore>()(
                     resJson?.description ||
                     Locale.Midjourney.UnknownError,
                 );
+              } else if (resJson.status == 402) {
+                botMessage.content = resJson?.message;
               } else {
                 // const taskId: string = resJson.result;
                 console.log("hihihihi");
@@ -721,6 +899,229 @@ export const useChatStore = create<ChatStore>()(
                 botMessage.attr.status = resJson.status;
                 console.log("[botMessage]", botMessage);
                 this.fetchMidjourneyStatus(botMessage, extAttr);
+              }
+            } catch (e: any) {
+              console.error(e);
+              botMessage.content = Locale.Midjourney.TaskSubmitErr(
+                e?.error || e?.message || Locale.Midjourney.UnknownError,
+              );
+            } finally {
+              ChatControllerPool.remove(
+                sessionIndex,
+                botMessage.id ?? messageIndex,
+              );
+              botMessage.streaming = false;
+            }
+          };
+          await startFn();
+          get().onNewMessage(botMessage);
+          set(() => ({}));
+          extAttr?.setAutoScroll(true);
+        } else if (
+          content.toLowerCase().startsWith("sd") ||
+          content.toLowerCase().startsWith("SD")
+        ) {
+          botMessage.model = "stable_diffusion";
+          const startFn = async () => {
+            const prompt = content.substring(3).trim();
+            let action: string = "IMAGINE";
+            const firstSplitIndex = prompt.indexOf("::");
+            if (firstSplitIndex > 0) {
+              action = prompt.substring(0, firstSplitIndex);
+            }
+            if (
+              ![
+                "UPSCALE",
+                "VARIATION",
+                "IMAGINE",
+                "DESCRIBE",
+                "BLEND",
+                "REROLL",
+              ].includes(action)
+            ) {
+              botMessage.content = Locale.Midjourney.TaskErrUnknownType;
+              botMessage.streaming = false;
+              return;
+            }
+            botMessage.attr.action = action;
+            let actionIndex: any = null;
+            let actionUseTaskId: any = null;
+            if (
+              action === "VARIATION" ||
+              action == "UPSCALE" ||
+              action == "REROLL"
+            ) {
+              actionIndex = prompt.substring(
+                firstSplitIndex + 2,
+                firstSplitIndex + 3,
+              );
+              // actionIndex = parseInt(
+              //   prompt.substring(firstSplitIndex + 2, firstSplitIndex + 3),
+              // );
+              actionUseTaskId = prompt.substring(firstSplitIndex + 5);
+            }
+            try {
+              let res = null;
+              const reqFn = (path: string, method: string, body?: any) => {
+                // return fetch("/api/midjourney/mj/" + path, {
+                return fetch("/api/stable_diffusion/mj/" + path, {
+                  method: method,
+                  headers: getHeaders(),
+                  body: body,
+                });
+              };
+              switch (action) {
+                case "IMAGINE": {
+                  console.log("[test] action:", action);
+                  const requestBody = {
+                    action: action,
+                    prompt: prompt,
+                    imageUrl: "",
+                  };
+                  console.log("[requesrfBody(chat.ts)]", requestBody);
+                  res = await reqFn(
+                    "submit/imagine",
+                    "POST",
+                    JSON.stringify({
+                      prompt: prompt,
+                      action: action,
+                      base64: extAttr?.useImages?.[0]?.base64 ?? null,
+                    }),
+                  );
+                  break;
+                }
+                case "DESCRIBE": {
+                  res = await reqFn(
+                    "submit/describe",
+                    "POST",
+                    JSON.stringify({
+                      action: action,
+                      base64: extAttr.useImages[0].base64,
+                    }),
+                  );
+                  break;
+                }
+                case "BLEND": {
+                  res = await reqFn(
+                    "submit/blend",
+                    "POST",
+                    JSON.stringify({
+                      action: action,
+                      base64Array: [
+                        extAttr.useImages[0].base64,
+                        extAttr.useImages[1].base64,
+                      ],
+                    }),
+                  );
+                  break;
+                }
+                case "UPSCALE":
+                  res = await reqFn(
+                    "submit/upscale",
+                    "POST",
+                    JSON.stringify({
+                      index: actionIndex,
+                      origin_task_id: actionUseTaskId,
+                      action: action,
+                    }),
+                  );
+                  break;
+                case "VARIATION":
+                  res = await reqFn(
+                    "submit/variation",
+                    "POST",
+                    JSON.stringify({
+                      action: action,
+                      index: actionIndex,
+                      origin_task_id: actionUseTaskId,
+                    }),
+                  );
+                  break;
+                case "REROLL": {
+                  res = await reqFn(
+                    "submit/upscale",
+                    "POST",
+                    JSON.stringify({
+                      action: action,
+                      index: actionIndex,
+                      origin_task_id: actionUseTaskId,
+                    }),
+                  );
+                  // case "REROLL": {
+                  //   res = await reqFn(
+                  //     "submit/change",
+                  //     "POST",
+                  //     JSON.stringify({
+                  //       action: action,
+                  //       index: actionIndex,
+                  //       taskId: actionUseTaskId,
+                  //     }),
+                  //   );
+                  break;
+                }
+                default:
+              }
+              console.log("res", res);
+              if (res == null) {
+                botMessage.content =
+                  Locale.Midjourney.TaskErrNotSupportType(action);
+                botMessage.streaming = false;
+                return;
+              }
+              if (!res.ok) {
+                const text = await res.text();
+                throw new Error(
+                  `\n${Locale.Midjourney.StatusCode(
+                    res.status,
+                  )}\n${Locale.Midjourney.RespBody(
+                    text || Locale.Midjourney.None,
+                  )}`,
+                );
+              }
+              const resJson = await res.json();
+              console.log("resJson", resJson);
+              // if (
+              //   res.status < 200 ||
+              //   res.status >= 300 ||
+              //   (resJson.code != 1 && resJson.code != 22)
+              // ) {
+              if (res.status != 200) {
+                botMessage.content = Locale.Midjourney.TaskSubmitErr(
+                  resJson?.message ||
+                    resJson?.error ||
+                    resJson?.description ||
+                    Locale.Midjourney.UnknownError,
+                );
+              } else {
+                // const taskId: string = resJson.result;
+                console.log("hihihihi");
+                // GoAPI
+                const taskId: string = resJson.id;
+                const prefixContent = Locale.Midjourney.TaskPrefix(
+                  prompt,
+                  taskId,
+                );
+                // GoAPI
+                let description = "";
+                if (resJson.status) {
+                  description = "提交成功";
+                }
+                botMessage.content =
+                  prefixContent +
+                    `[${new Date().toLocaleString()}] - ${
+                      Locale.Midjourney.TaskSubmitOk
+                    }: ` +
+                    // resJson?.description || Locale.Midjourney.PleaseWait;
+                    description || Locale.Midjourney.PleaseWait;
+                botMessage.attr.taskId = taskId;
+                botMessage.attr.status = resJson.status;
+                botMessage.attr.prompt = resJson.meta.prompt;
+                console.log("[botMessage]", botMessage);
+                this.fetchStableDiffusionStatus(botMessage, extAttr);
+                // let imgUrl = resJson.output;
+                // botMessage.attr.imgUrl = imgUrl;
+                // botMessage.content =
+                //   prefixContent + `[![${taskId}](${imgUrl})](${imgUrl})`;
               }
             } catch (e: any) {
               console.error(e);
