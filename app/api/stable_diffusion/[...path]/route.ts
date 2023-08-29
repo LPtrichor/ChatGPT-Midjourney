@@ -15,6 +15,16 @@ async function handle(
   { params }: { params: { path: string[] } },
 ) {
   console.log("[Midjourney Route] params ", params);
+  // return NextResponse.json({
+  //   error: false,
+  //   msg: "success",
+  //   data: {
+  //     "id": "5f9f5e3b-5b0a-4b0a-9b0a-5b0a4b0a9b0a",
+  //     "name": "测试",
+  //     "phone": "13800138000",
+  //     "email": ""
+  //   }
+  // });
   // return NextResponse.json(
   //   {
   //     BASE_URL: BASE_URL,
@@ -45,6 +55,7 @@ async function handle(
   // );
   const customMjProxyUrl = req.headers.get("midjourney-proxy-url");
   let mjProxyUrl = BASE_URL;
+  mjProxyUrl = mjProxyUrl + "/api/ai_draw_sd";
   if (
     customMjProxyUrl &&
     (customMjProxyUrl.startsWith("http://") ||

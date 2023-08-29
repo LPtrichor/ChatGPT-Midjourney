@@ -45,6 +45,7 @@ async function handle(
   // );
   const customMjProxyUrl = req.headers.get("midjourney-proxy-url");
   let mjProxyUrl = BASE_URL;
+  mjProxyUrl = mjProxyUrl + "/api/ai_draw_mj";
   if (
     customMjProxyUrl &&
     (customMjProxyUrl.startsWith("http://") ||
