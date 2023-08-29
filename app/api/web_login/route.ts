@@ -12,7 +12,7 @@ async function handle(req: NextRequest) {
   //     "id": "5f9f5e3b-5b0a-4b0a-9b0a-5b0a4b0a9b0a",
   //     "name": "测试",
   //     "phone": "13800138000",
-  //     "email": "hihi"
+  //     "email": ""
   //   }
   // });
   return await request(req);

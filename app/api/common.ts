@@ -23,6 +23,7 @@ const ADMIN_URL = process.env.NEXT_PUBLIC_BASE_URL ?? ADMIN_Default_URL;
 // 登录相关
 export async function request(req: NextRequest) {
   let baseUrl = BASE_URL;
+  baseUrl = ADMIN_URL;
   // let baseUrl = "http://localhost";
 
   if (!baseUrl.startsWith("http")) {
