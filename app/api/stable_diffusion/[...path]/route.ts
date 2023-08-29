@@ -4,7 +4,7 @@ import path from "path";
 
 // const DEFAULT_MIDJOUREY_PROXY_URL = "http://43.135.172.52:2788";
 // const DEFAULT_MIDJOUREY_PROXY_URL = "https://api.midjourneyapi.xyz";
-const DEFAULT_STABLE_DIFFUSION_PROXY_URL = "";
+const DEFAULT_STABLE_DIFFUSION_PROXY_URL = "http://admin";
 // const BASE_URL = process.env.MIDJOURNEY_PROXY_URL ?? null;
 const BASE_URL =
   process.env.STABLE_DIFFUSION_PROXY_URL ?? DEFAULT_STABLE_DIFFUSION_PROXY_URL;

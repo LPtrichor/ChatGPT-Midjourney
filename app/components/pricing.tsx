@@ -71,7 +71,7 @@ export function Pricing() {
   useEffect(() => {
     setLoading(true);
     // fetch("/api/package/onSales", {
-    fetch(ADMIN_URL + "/api/get_vip_level", {
+    fetch("/api/get_vip_level", {
       method: "get",
       headers: {
         Authorization: "Bearer " + authStore.token,
@@ -160,7 +160,7 @@ export function Pricing() {
       pay_type = "charge";
     }
     console.log("[pay_type]", pay_type);
-    fetch(ADMIN_URL + "/api/alipay", {
+    fetch("/api/alipay", {
       method: "post",
       headers: {
         Authorization: "Bearer " + authStore.token,

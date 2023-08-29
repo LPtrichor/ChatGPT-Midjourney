@@ -105,7 +105,7 @@ export function Pay() {
       }
       // console.log(`Timer count: ${count}`);
       console.log("[env(pay.tsx)]", process.env.NEXT_PUBLIC_BASE_URL);
-      fetch(ADMIN_URL + "/api/alipay_return", {
+      fetch("/api/alipay_return", {
         method: "post",
         headers: {
           // Authorization: "Bearer " + authStore.token,

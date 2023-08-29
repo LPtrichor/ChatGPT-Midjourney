@@ -43,7 +43,7 @@ export const useProfileStore = create<ProfileStore>()(
         // return fetch("/api/users/profile", {
         return (
           // fetch("http://127.0.0.1/api/get_user", {
-          fetch(ADMIN_URL + "/api/get_user", {
+          fetch("/api/get_user", {
             method: "get",
             headers: {
               Authorization: "Bearer " + token,

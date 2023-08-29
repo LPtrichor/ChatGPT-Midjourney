@@ -1,4 +1,3 @@
-"use client";
 // import type { ChatRequest, ChatResponse } from "./api/openai/typing";
 import { json } from "stream/consumers";
 import type { LoginResponse } from "./api/login/route";
@@ -251,11 +250,11 @@ export async function requestLogin(
     onError: (error: Error, statusCode?: number) => void;
   },
 ): Promise<LoginResult> {
-  console.log("API_URL", API_URL);
+  // console.log("API_URL", API_URL);
   //const openaiUrl = useAccessStore.getState().openaiUrl;
   try {
     // const res = await fetch("/api/web_login", {
-    const res = await fetch(API_URL + "/api/web_login", {
+    const res = await fetch("/api/web_login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json", //,
@@ -401,8 +400,7 @@ export async function requestRegister(
   //const openaiUrl = useAccessStore.getState().openaiUrl;
   try {
     console.log("这里是request.ts requestRegister");
-    const res = await fetch(API_URL + "/api/register", {
-      // const res = await fetch("/api/register", {
+    const res = await fetch("/api/register", {
       method: "POST",
       headers: {
         "Content-Type": "application/json", //,
@@ -528,7 +526,7 @@ export async function requestSendEmailCode(
 ): Promise<RegisterResult> {
   //const openaiUrl = useAccessStore.getState().openaiUrl;
   try {
-    const res = await fetch(API_URL + "/api/send_email", {
+    const res = await fetch("/api/send_email", {
       // const res = await fetch("/api/send_email", {
       method: "POST",
       headers: {

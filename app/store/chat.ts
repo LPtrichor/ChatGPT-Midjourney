@@ -324,7 +324,7 @@ export const useChatStore = create<ChatStore>()(
                 //   action: statusResJson?.action,
                 // };
                 // 需要修改prompt字段
-                const res_ctrl = await fetch(ADMIN_URL + "/api/ai_draw", {
+                const res_ctrl = await fetch("/api/ai_draw", {
                   method: "POST",
                   headers: getHeaders(),
                   body: JSON.stringify(requestBody),
@@ -496,7 +496,7 @@ export const useChatStore = create<ChatStore>()(
                 //   action: statusResJson?.action,
                 // };
                 // 需要修改prompt字段
-                const res_ctrl = await fetch(ADMIN_URL + "/api/ai_draw", {
+                const res_ctrl = await fetch("/api/ai_draw", {
                   method: "POST",
                   headers: getHeaders(),
                   body: JSON.stringify(requestBody),

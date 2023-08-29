@@ -10,7 +10,7 @@ const DEFAULT_PROTOCOL = "https";
 const BASE_URL = process.env.BASE_URL ?? OPENAI_URL;
 const PROTOCOL = process.env.PROTOCOL ?? DEFAULT_PROTOCOL;
 // export const ADMIN_Default_URL = "https://www.admin.rovy.me";
-const ADMIN_Default_URL = "http://127.0.0.1";
+const ADMIN_Default_URL = "http://admin";
 const ADMIN_URL = process.env.NEXT_PUBLIC_BASE_URL ?? ADMIN_Default_URL;
 // 打印上面的所有变量
 // console.log('OPENAI_URL', OPENAI_URL)
@@ -35,7 +35,7 @@ export async function request(req: NextRequest) {
   );
   console.log(`url = ${baseUrl}/${uri}`);
   console.log("这里是common.ts");
-  console.log("[req] ", req);
+  // console.log("[req] ", req);
   return fetch(`${baseUrl}/${uri}`, {
     headers: {
       "Content-Type": "application/json",
