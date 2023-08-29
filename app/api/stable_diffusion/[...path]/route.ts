@@ -7,7 +7,7 @@ import path from "path";
 const DEFAULT_STABLE_DIFFUSION_PROXY_URL = "http://admin";
 // const BASE_URL = process.env.MIDJOURNEY_PROXY_URL ?? null;
 const BASE_URL =
-  process.env.STABLE_DIFFUSION_PROXY_URL ?? DEFAULT_STABLE_DIFFUSION_PROXY_URL;
+  process.env.NEXT_PUBLIC_BASE_URL ?? DEFAULT_STABLE_DIFFUSION_PROXY_URL;
 // const API_SECRET = process.env.MIDJOURNEY_PROXY_API_SECRET ?? null;
 
 async function handle(
