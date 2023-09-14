@@ -6,7 +6,7 @@ import { NextRequest } from "next/server";
 // const authStore = useAuthStore();
 export const OPENAI_URL = "api.openai.com";
 // export const ADMIN_Default_URL = "http://127.0.0.1";
-const DEFAULT_PROTOCOL = "https";
+const DEFAULT_PROTOCOL = "http";
 const BASE_URL = process.env.BASE_URL ?? OPENAI_URL;
 const PROTOCOL = process.env.PROTOCOL ?? DEFAULT_PROTOCOL;
 // export const ADMIN_Default_URL = "https://www.admin.rovy.me";

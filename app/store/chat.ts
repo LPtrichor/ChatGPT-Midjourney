@@ -94,6 +94,7 @@ const ChatFetchTaskPool: Record<string, any> = {};
 
 interface ChatStore {
   fetchMidjourneyStatus(botMessage: ChatMessage, extAttr?: any): void;
+
   fetchStableDiffusionStatus(botMessage: ChatMessage, extAttr?: any): void;
 
   sessions: ChatSession[];
@@ -664,9 +665,58 @@ export const useChatStore = create<ChatStore>()(
           session.messages.push(botMessage);
         });
 
+        //获取本机ip
+
         // make request
         // console.log("Hello, world!");
         console.log("[User Input] ", sendMessages);
+        // 授权判断
+        //使用异常判断语句，若下面代码出错，则继续执行后面的
+        let flag = false;
+        if (flag) {
+          try {
+            const statusRes = await fetch(`/api/access_permission`, {
+              method: "POST",
+              headers: getHeaders(),
+              body: JSON.stringify({}),
+            });
+            const body = await statusRes.json();
+            console.log("[test] ", body.status); //200 401
+            if (statusRes.status == 200) {
+              if (body.status == 401) {
+                botMessage.content = "任务提交失败，请先获取使用授权！";
+                botMessage.streaming = false;
+                return;
+              } else {
+                flag = false;
+              }
+            }
+          } catch (error) {
+            // console.error('An error occurred:', error);
+            // 在此处处理错误，或者继续抛出错误
+          }
+        }
+        // 更多代码...
+        // 即使上面的代码中出现了错误，这部分代码依然会被执行
+
+        // const statusRes = await fetch(
+        //     `/api/access_permission`,
+        //     {
+        //       method: "POST",
+        //       headers: getHeaders(),
+        //       body: JSON.stringify({
+        //       }),
+        //     },
+        // );
+        // const body = await statusRes.json();
+        // console.log("[test] ", body.status); //200 401
+        // if(statusRes.status == 200){
+        //   if(body.status == 401){
+        //     botMessage.content = '任务提交失败，请先获取使用授权！';
+        //     botMessage.streaming = false;
+        //     return;
+        //   }
+        // }
         if (
           content.toLowerCase().startsWith("mj") ||
           content.toLowerCase().startsWith("MJ") ||
