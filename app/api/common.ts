@@ -120,9 +120,43 @@ export async function requestOpenai(req: NextRequest) {
   // console.log("[fetchOptions]", fetchOptions);
   // console.log("[fetchUrl]", fetchUrl);
   try {
-    const res = await fetch(fetchUrl, fetchOptions);
+    const res_pre = await fetch(fetchUrl, fetchOptions);
     // const res = await fetch(fetchUrl);
 
+    if (res_pre.status !== 200) {
+      return new Response(res_pre.body);
+      // return res_pre;
+      // const newHeaders = new Headers(res_pre.headers);
+      // return new Response(res_pre.body, {
+      //   status: res_pre.status,
+      //   statusText: res_pre.statusText,
+      //   headers: newHeaders,
+      // });
+    }
+
+    // 获取res_pre的内容 解析成json
+    const res_ = await res_pre.json(); // 这里只能被解析一次
+    console.log("[res_]", res_);
+
+    const fetchUrl_gpt = res_.fetch_url;
+    const makeBearer = (token: string) => `Bearer ${token.trim()}`;
+    const fetchOptions_gpt: RequestInit = {
+      headers: {
+        "Content-Type": "application/json",
+        "x-requested-with": "XMLHttpRequest",
+        Authorization: makeBearer(res_.api_key),
+        // ...(process.env.OPENAI_ORG_ID && {
+        //   "OpenAI-Organization": process.env.OPENAI_ORG_ID,
+        // }),
+      },
+      cache: "no-store",
+      method: req.method,
+      body: res_.data,
+      signal: controller.signal,
+    };
+
+    const res = await fetch(fetchUrl_gpt, fetchOptions_gpt);
+    console.log("[res](common.ts)", res.status);
     if (res.status === 401) {
       // to prevent browser prompt for credentials
       const newHeaders = new Headers(res.headers);
