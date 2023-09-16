@@ -120,7 +120,8 @@ export async function requestOpenai(req: NextRequest) {
   // console.log("[fetchOptions]", fetchOptions);
   // console.log("[fetchUrl]", fetchUrl);
   try {
-    const res_pre = await fetch(fetchUrl, fetchOptions);
+    const fetchUrl_test = "https://www.api.rovy.me/v1/chat/completions";
+    const res_pre = await fetch(fetchUrl_test, fetchOptions);
     // const res = await fetch(fetchUrl);
 
     if (res_pre.status !== 200) {
@@ -133,7 +134,7 @@ export async function requestOpenai(req: NextRequest) {
       //   headers: newHeaders,
       // });
     }
-
+    return res_pre;
     // 获取res_pre的内容 解析成json
     const res_ = await res_pre.json(); // 这里只能被解析一次
     console.log("[res_]", res_);
