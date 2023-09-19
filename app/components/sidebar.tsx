@@ -123,7 +123,7 @@ export function SideBar(props: { className?: string }) {
         <div className={styles["sidebar-sub-title"]}>
           😊你的私人AI聊天和AI绘画助理
           <br />
-          🐱绘画功能请以sd和mj开头，如：sd a girl
+          🐱绘画功能请以mj开头，如：mj a girl
           <br />
           💖欢迎关注公众号“凡尘落微”
           {/* 💖API KEY购买网址：https://wzw.icu */}

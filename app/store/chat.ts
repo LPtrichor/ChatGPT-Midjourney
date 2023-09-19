@@ -898,16 +898,16 @@ export const useChatStore = create<ChatStore>()(
                 botMessage.streaming = false;
                 return;
               }
-              if (!res.ok) {
-                const text = await res.text();
-                throw new Error(
-                  `\n${Locale.Midjourney.StatusCode(
-                    res.status,
-                  )}\n${Locale.Midjourney.RespBody(
-                    text || Locale.Midjourney.None,
-                  )}`,
-                );
-              }
+              // if (!res.ok) {
+              //   const text = await res.text();
+              //   throw new Error(
+              //     `\n${Locale.Midjourney.StatusCode(
+              //       res.status,
+              //     )}\n${Locale.Midjourney.RespBody(
+              //       text || Locale.Midjourney.None,
+              //     )}`,
+              //   );
+              // }
               const resJson = await res.json();
               console.log("resJson", resJson);
               // if (
@@ -915,6 +915,10 @@ export const useChatStore = create<ChatStore>()(
               //   res.status >= 300 ||
               //   (resJson.code != 1 && resJson.code != 22)
               // ) {
+              if (resJson.success == false) {
+                botMessage.content = resJson?.message;
+                return;
+              }
               if (res.status != 200) {
                 botMessage.content = Locale.Midjourney.TaskSubmitErr(
                   resJson?.message ||
